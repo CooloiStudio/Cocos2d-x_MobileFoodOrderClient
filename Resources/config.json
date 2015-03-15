@@ -1,0 +1,6 @@
+{
+    "globle" : { "version" : "0.0.0.0"},
+    "userinfo" : { "name" : "password"},
+    "network" : {"ip" : "192.168.2.204", "port" : "10086" },
+    "other" : {"autologin" : "0"}
+}
