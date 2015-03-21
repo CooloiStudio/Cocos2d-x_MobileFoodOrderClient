@@ -8,6 +8,11 @@
 
 #include "mod_custom.h"
 
+ModCustom::ModCustom()
+{
+    
+}
+
 Scene* ModCustom::createScene()
 {
     auto scene = Scene::create();
@@ -52,7 +57,7 @@ void ModCustom::InitTop()
     auto button_info = Button::create("info.png");
     button_info->setScale(scale);
     button_info->setPosition(Vec2(size.width - button_back->getContentSize().width / 2 * scale,layer_top_->getPositionY() + layer_top_->getContentSize().height / 2));
-    button_info->addTouchEventListener(CC_CALLBACK_2(ModCustom::ButtonBackCallback, this));
+    button_info->addTouchEventListener(CC_CALLBACK_2(ModCustom::ButtonInfoCallback, this));
     
     
     addChild(button_back,2);
@@ -63,11 +68,28 @@ void ModCustom::InitTop()
 
 void ModCustom::ButtonBackCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
 {
-    Director::getInstance()->popScene();
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+    MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
+    return;
+#endif
+    
+    Director::getInstance()->end();
+    
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+    exit(0);
+#endif
 }
 
 void ModCustom::ButtonInfoCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
 {
+    if (LogInfo::GetLogIn() == 0)
+    {
+        Director::getInstance()->pushScene(ModCustomInfo::createScene());
+    }
+    else
+    {
+        Director::getInstance()->pushScene(ModMainMenu::createScene(0));
+    }
     log("Touch Info");
 }
 

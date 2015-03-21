@@ -12,6 +12,9 @@
 #include "iostream"
 #include "cocos2d.h"
 #include "cocos-ext.h"
+#include "mod_custom_info.h"
+#include "mod_main_menu.h"
+#include "info.h"
 
 USING_NS_CC;
 using namespace ui;
@@ -25,13 +28,16 @@ private:
     
 #pragma mark - Initialization
 public:
-    ModCustom(){}
+    ModCustom();
     ~ModCustom(){}
     virtual bool init();
     static Scene* createScene();
     CREATE_FUNC(ModCustom);
     
 public:
+    
+    
+    
     void InitTop();
     
     

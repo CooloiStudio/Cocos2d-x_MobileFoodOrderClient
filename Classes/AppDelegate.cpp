@@ -32,7 +32,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
         director->setOpenGLView(glview);
     }
 
-    director->getOpenGLView()->setDesignResolutionSize(640, 960, ResolutionPolicy::SHOW_ALL);
+    director->getOpenGLView()->setDesignResolutionSize(640, 960, ResolutionPolicy::NO_BORDER);
 
     // turn on display FPS
     director->setDisplayStats(false);
@@ -43,7 +43,8 @@ bool AppDelegate::applicationDidFinishLaunching() {
     FileUtils::getInstance()->addSearchPath("res");
 
     // create a scene. it's an autorelease object
-    auto scene = ModMainMenu::createScene();
+//    auto scene = ModMainMenu::createScene(0);
+    auto scene = ModCustom::createScene();
 
     // run
     director->runWithScene(scene);
