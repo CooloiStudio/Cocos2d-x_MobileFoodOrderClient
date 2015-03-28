@@ -11,11 +11,15 @@
 
 #include "iostream"
 #include "cocos2d.h"
+#include "mod_http.h"
 
 USING_NS_CC;
 
 class ModShopping : public Layer
 {
+private:
+    ModHttp* mod_http;
+    
 #pragma mark - Initialization 
 public:
     ModShopping(){}
@@ -23,6 +27,10 @@ public:
     virtual bool init();
     static Scene* createScene();
     CREATE_FUNC(ModShopping);
+    
+public:
+    
+    void testDownload();
     
 };
 

@@ -18,5 +18,8 @@ Scene* ModShopping::createScene()
 
 bool ModShopping::init()
 {
+    mod_http = ModHttp::Create();
+    addChild(mod_http);
+    mod_http->DownloadPicture(0);
     return true;
 }

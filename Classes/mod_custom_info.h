@@ -12,6 +12,7 @@
 #include "iostream"
 #include "cocos2d.h"
 #include "cocos-ext.h"
+#include "mod_shopping.h"
 
 USING_NS_CC;
 using namespace ui;
@@ -33,6 +34,7 @@ public:
     
     void InitTop();
     void ButtonBackCallback(Ref* pSender, Widget::TouchEventType type);
+    void ButtonShopCallback(Ref* pSender, Widget::TouchEventType type);
 };
 
 #endif /* defined(__MobileFoodOrderClient__mod_custom_info__) */

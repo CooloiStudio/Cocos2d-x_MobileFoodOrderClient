@@ -49,16 +49,22 @@ void ModCustomInfo::InitTop()
     button_back->setPosition(Vec2(layer_top_->getPositionX() + button_back->getContentSize().width / 2 * scale,layer_top_->getPositionY() + layer_top_->getContentSize().height / 2));
     button_back->addTouchEventListener(CC_CALLBACK_2(ModCustomInfo::ButtonBackCallback, this));
     
-    auto button_info = Button::create("shop.png");
-    button_info->setScale(scale);
-    button_info->setPosition(Vec2(layer_top_->getPositionX() + size.width - button_back->getContentSize().width / 2 * scale,layer_top_->getPositionY() + layer_top_->getContentSize().height / 2));
-//    button_info->addTouchEventListener(CC_CALLBACK_2(ModCustom::ButtonBackCallback, this));
+    auto button_shop = Button::create("shop.png");
+    button_shop->setScale(scale);
+    button_shop->setPosition(Vec2(layer_top_->getPositionX() + size.width - button_back->getContentSize().width / 2 * scale,layer_top_->getPositionY() + layer_top_->getContentSize().height / 2));
+    button_shop->addTouchEventListener(CC_CALLBACK_2(ModCustomInfo::ButtonShopCallback, this));
     
     
     addChild(button_back,2);
-    addChild(button_info,2);
+    addChild(button_shop,2);
     addChild(label_title,2);
     addChild(layer_top_,1);
+}
+
+void ModCustomInfo::ButtonShopCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
+{
+    auto* ret = ModShopping::createScene();
+    Director::getInstance()->pushScene(ret);
 }
 
 void ModCustomInfo::ButtonBackCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
