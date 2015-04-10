@@ -54,6 +54,8 @@ ModFoodShow* ModFoodShow::Create(int id)
 
 int ModFoodShow::InitFoodShow()
 {
+    log("init food show");
+    
     auto path = FileUtils::getInstance()->getWritablePath() + "ceshi.jpg";
     img_ = Sprite::create(path);
     img_->setScale(this->getContentSize().height * 0.9 / img_->getContentSize().height );
@@ -85,7 +87,7 @@ int ModFoodShow::InitFoodShow()
                            this->getPosition().y + this->getContentSize().height * 1 / 5));
     addChild(button_shop,3);
     
-    
+    log("food show over");
     
     
     return 0;

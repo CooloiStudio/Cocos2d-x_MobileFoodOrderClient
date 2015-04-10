@@ -26,7 +26,7 @@ class ModCustom : public Layer, public ScrollViewDelegate
 {
 private:
     Layer* layer_top_;
-    Layer* layer_;
+//    Layer* layer_;
     ScrollView* layer_list_;
     std::vector<ModFoodShow*> layer_food_;
     Vec2 touch_began_;

@@ -32,7 +32,7 @@ bool ModCustom::init()
 
 void ModCustom::InitFood()
 {
-    layer_ = Layer::create();
+//    layer_ = Layer::create();
     layer_list_ = ScrollView::create();
     layer_list_->setViewSize(Size(Director::getInstance()->getVisibleSize().width,Director::getInstance()->getVisibleSize().height - layer_top_->getContentSize().height));
     layer_list_->setBounceable(true);
@@ -44,9 +44,9 @@ void ModCustom::InitFood()
     auto origin = Director::getInstance()->getVisibleOrigin();
     auto* food = ModFoodShow::Create(0);
 //    food->setPosition(origin.x,layer_list_->getPositionY() + Director::getInstance()->getVisibleSize().height * 4 / 5 - layer_top_->getContentSize().height);
-    
+    log("add first food");
     food->setPosition(origin.x,origin.y);
-    layer_->addChild(food);
+    layer_list_->addChild(food);
     layer_food_.push_back(food);
     
     for (int i = 0 ; i < 8 ; i++)
@@ -54,16 +54,18 @@ void ModCustom::InitFood()
         auto* food1 = ModFoodShow::Create(0);
         food1->setPosition(origin.x,
                            layer_food_[layer_food_.size() - 1]->getPositionY() + food1->getContentSize().height + 5);
-        layer_->addChild(food1);
+        layer_list_->addChild(food1);
         layer_food_.push_back(food1);
+        log("add food%d",i);
     }
-    layer_list_->addChild(layer_);
-    layer_->setContentSize(Size(Director::getInstance()->getVisibleSize().width,
-                                     layer_food_.size() * 300));
+//    layer_list_->addChild(layer_);
+//    layer_->setContentSize(Size(Director::getInstance()->getVisibleSize().width,
+//                                     layer_food_.size() * 300));
     layer_list_->setContentSize(Size(Director::getInstance()->getVisibleSize().width,
                                      layer_food_.size() * (food->getContentSize().height + 5)));
     layer_list_->setContentOffset(Vec2(layer_list_->getPositionX(),
                                   0 -layer_list_->getContentSize().height + Director::getInstance()->getVisibleSize().height - layer_top_->getContentSize().height));
+    log("add layer list");
     AddListener();
     
     layer_list_->setDelegate(this);
