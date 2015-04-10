@@ -23,19 +23,64 @@ Scene* ModCustom::createScene()
 
 bool ModCustom::init()
 {
-    auto layer_background = LayerColor::create(Color4B(240,240,255,255));
+    auto layer_background = LayerColor::create(Color4B(221,221,221,255));
     InitTop();
-    
+    InitFood();
     addChild(layer_background, 0);
     return true;
 }
+
+void ModCustom::InitFood()
+{
+    layer_ = Layer::create();
+    layer_list_ = ScrollView::create();
+    layer_list_->setViewSize(Size(Director::getInstance()->getVisibleSize().width,Director::getInstance()->getVisibleSize().height - layer_top_->getContentSize().height));
+    layer_list_->setBounceable(true);
+    layer_list_->setDirection(ScrollView::Direction::VERTICAL);
+    addChild(layer_list_,2);
+    
+    layer_list_->setPosition(Vec2(layer_list_->getPositionX(),
+                                  layer_list_->getPositionY()));
+    auto origin = Director::getInstance()->getVisibleOrigin();
+    auto* food = ModFoodShow::Create(0);
+//    food->setPosition(origin.x,layer_list_->getPositionY() + Director::getInstance()->getVisibleSize().height * 4 / 5 - layer_top_->getContentSize().height);
+    
+    food->setPosition(origin.x,origin.y);
+    layer_->addChild(food);
+    layer_food_.push_back(food);
+    
+    for (int i = 0 ; i < 8 ; i++)
+    {
+        auto* food1 = ModFoodShow::Create(0);
+        food1->setPosition(origin.x,
+                           layer_food_[layer_food_.size() - 1]->getPositionY() + food1->getContentSize().height + 5);
+        layer_->addChild(food1);
+        layer_food_.push_back(food1);
+    }
+    layer_list_->addChild(layer_);
+    layer_->setContentSize(Size(Director::getInstance()->getVisibleSize().width,
+                                     layer_food_.size() * 300));
+    layer_list_->setContentSize(Size(Director::getInstance()->getVisibleSize().width,
+                                     layer_food_.size() * (food->getContentSize().height + 5)));
+    layer_list_->setContentOffset(Vec2(layer_list_->getPositionX(),
+                                  0 -layer_list_->getContentSize().height + Director::getInstance()->getVisibleSize().height - layer_top_->getContentSize().height));
+    AddListener();
+    
+    layer_list_->setDelegate(this);
+}
+
+
+
+
+
+
 
 void ModCustom::InitTop()
 {
     auto origin = Director::getInstance()->getVisibleOrigin();
     
     auto size = Director::getInstance()->getVisibleSize();
-    layer_top_ = LayerColor::create(Color4B(244, 245, 255, 255));
+    layer_top_ = LayerColor::create(Color4B(249, 249, 249, 255));
     layer_top_->setContentSize(Size(size.width,size.height / 15));
     layer_top_->setPosition(Vec2(origin.x + 0,origin.y + size.height / 15 * 14));
     layer_top_->setCascadeColorEnabled(true);
@@ -62,10 +107,10 @@ void ModCustom::InitTop()
     button_info->addTouchEventListener(CC_CALLBACK_2(ModCustom::ButtonInfoCallback, this));
     
     
-    addChild(button_back,2);
-    addChild(button_info,2);
-    addChild(label_title,2);
-    addChild(layer_top_,1);
+    addChild(button_back,51);
+    addChild(button_info,51);
+    addChild(label_title,51);
+    addChild(layer_top_,50);
 }
 
 void ModCustom::ButtonBackCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
@@ -95,3 +140,55 @@ void ModCustom::ButtonInfoCallback(cocos2d::Ref *pSender, Widget::TouchEventType
     log("Touch Info");
 }
 
+bool ModCustom::onTouchBegan(cocos2d::Touch *touch, cocos2d::Event* event)
+{
+    log("ModMsgBox::onTouchBegan");
+    
+    touch_began_ = touch->getLocation();
+    
+    return true;
+} // ModMsgBox::onTouchBegan
+
+void ModCustom::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
+{
+    if (50 > abs(touch->getLocation().x - touch_began_.x) && 50 > abs(touch->getLocation().y - touch_began_.y))
+    {
+    
+    auto location = this->convertToNodeSpace(touch->getLocation());
+    if (0 == ModCheck::CheckContainsPoint(layer_food_[0], layer_list_,location))
+    {
+        log("touch in layer");
+        return;
+    }
+    }
+    
+} //  ModMsgBox::onTouchEnded
+
+void ModCustom::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event)
+{
+//    layer_list_->setPosition(Vec2(layer_list_->getPosition().x,
+//                                  layer_list_->getPosition().y + touch->getDelta().y));
+//    layer_list_->setPosition(Vec2(layer_list_->getPosition().x + touch->getDelta().x,
+//                                  layer_list_->getPosition().y + touch->getDelta().y));
+    
+    log("ModMsgBox::onTouchMoved");
+} // ModMsgBox::onTouchMoved
+
+void ModCustom::onTouchCancelled(cocos2d::Touch *touch, cocos2d::Event *event)
+{
+    return;
+}
+
+int ModCustom::AddListener()
+{
+    auto listener = EventListenerTouchOneByOne::create();
+    listener->setSwallowTouches(true);
+    
+    listener->onTouchBegan = CC_CALLBACK_2(ModCustom::onTouchBegan, this);
+    listener->onTouchEnded = CC_CALLBACK_2(ModCustom::onTouchEnded, this);
+    listener->onTouchMoved = CC_CALLBACK_2(ModCustom::onTouchMoved, this);
+    listener->onTouchCancelled = CC_CALLBACK_2(ModCustom::onTouchCancelled, this);
+    
+    listener_ = listener;
+    return 0;
+} // ModMsgBox::AddListener

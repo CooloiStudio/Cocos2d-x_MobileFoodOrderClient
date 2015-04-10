@@ -105,9 +105,9 @@ void ModMainMenu::CreateEdit()
     auto label_name = Label::createWithSystemFont("用户名:", "Airal", 20);
     label_name->setDimensions(edit_name_->getContentSize().width ,edit_name_->getContentSize().height  );
     label_name->setAnchorPoint(Vec2(0.5, 0.5));
-    label_name->setAlignment(cocos2d::TextHAlignment::LEFT);
+    label_name->setAlignment(cocos2d::TextHAlignment::CENTER);
     label_name->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
-    label_name->setPosition(Vec2(origin.x + edit_name_->getPositionX() - label_name->getContentSize().width / 2,
+    label_name->setPosition(Vec2(origin.x + edit_name_->getPositionX() - label_name->getContentSize().width,
                                  origin.y + edit_name_->getPositionY()));
     label_name->enableShadow();
     label_name->setTextColor(Color4B(240,240,255,255));
@@ -116,9 +116,9 @@ void ModMainMenu::CreateEdit()
     auto label_pass = Label::createWithSystemFont("密码:", "Airal", 20);
     label_pass->setDimensions(edit_name_->getContentSize().width,edit_name_->getContentSize().height );
     label_pass->setAnchorPoint(Vec2(0.5, 0.5));
-    label_pass->setAlignment(cocos2d::TextHAlignment::LEFT);
+    label_pass->setAlignment(cocos2d::TextHAlignment::CENTER);
     label_pass->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
-    label_pass->setPosition(Vec2(origin.x + edit_pass_->getPositionX()  - label_pass->getContentSize().width / 2,
+    label_pass->setPosition(Vec2(origin.x + edit_pass_->getPositionX()  - label_pass->getContentSize().width,
                                  origin.y + edit_pass_->getPositionY()));
     label_pass->enableShadow();
     label_pass->setTextColor(Color4B(240,240,255,255));
