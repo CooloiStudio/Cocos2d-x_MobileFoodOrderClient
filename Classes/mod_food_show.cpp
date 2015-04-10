@@ -31,7 +31,8 @@ bool ModFoodShow::init()
     back_layer->setContentSize(this->getContentSize());
     back_layer->setPosition(this->getPosition());
     addChild(back_layer,1);
-    InitFoodShow();
+//    InitFoodShow();
+    this->scheduleUpdate();
     return true;
 }
 
@@ -50,6 +51,15 @@ ModFoodShow* ModFoodShow::Create(int id)
         return nullptr;
     }
     
+}
+
+void ModFoodShow::update(float dt)
+{
+    if (0 == ModHttp::GetSocksDone())
+    {
+        ModHttp::SetGetSocksing();
+        InitFoodShow();
+    }
 }
 
 int ModFoodShow::InitFoodShow()

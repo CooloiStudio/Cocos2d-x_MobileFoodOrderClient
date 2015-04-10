@@ -29,6 +29,7 @@ private:
     EventListener* listener_;
     
 public:
+    void update(float dt);
     ModFoodShow();
     ~ModFoodShow();
     bool init();

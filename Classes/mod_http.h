@@ -23,12 +23,16 @@ public:
     ~ModHttp();
     bool init();
     static ModHttp* Create();
+    static int get_socks_;
 
     
 public:
     
     int DownloadPicture(int img_id);
     void OnDownloadComplete(HttpClient *sender, HttpResponse *response);
+    static void SetGetSocksDone(){get_socks_ = 0;}
+    static void SetGetSocksing(){get_socks_ = -1;}
+    static int GetSocksDone(){return get_socks_;}
 };
 
 #endif /* defined(__MobileFoodOrderClient__mod_http__) */

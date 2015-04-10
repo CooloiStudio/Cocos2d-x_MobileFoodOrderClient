@@ -49,6 +49,7 @@ int ModHttp::DownloadPicture(int img_id)
     request->setResponseCallback(CC_CALLBACK_2(ModHttp::OnDownloadComplete, this));
     HttpClient::getInstance()->sendImmediate(request);
     request->release();
+    SetGetSocksing();
     return 0;
 }
 
@@ -66,12 +67,13 @@ void ModHttp::OnDownloadComplete(cocos2d::network::HttpClient *sender, cocos2d::
     
     if (response->isSucceed())
     {
-    std::vector<char> *buffData = response->getResponseData();
-    char *buff = (char *)malloc(buffData->size());
-    std::copy(buffData->begin(), buffData->end(), buff);
-    auto fileName = FileUtils::getInstance()->getWritablePath() +"ceshi.jpg";
-    FILE *fp = fopen(fileName.c_str(), "wb+");
-    fwrite(buff, 1, buffData->size(), fp);
-    fclose(fp);
+        std::vector<char> *buffData = response->getResponseData();
+        char *buff = (char *)malloc(buffData->size());
+        std::copy(buffData->begin(), buffData->end(), buff);
+        auto fileName = FileUtils::getInstance()->getWritablePath() +"ceshi.jpg";
+        FILE *fp = fopen(fileName.c_str(), "wb+");
+        fwrite(buff, 1, buffData->size(), fp);
+        fclose(fp);
+        SetGetSocksDone();
     }
 }
