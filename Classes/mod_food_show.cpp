@@ -21,7 +21,10 @@ ModFoodShow::~ModFoodShow()
 
 bool ModFoodShow::init()
 {
-    mod_http_->DownloadPicture(food_id_);
+    if (-1 == ModHttp::GetSocksDone())
+        mod_http_->DownloadPicture(food_id_);
+    else
+        InitFoodShow();
     auto origin = Director::getInstance()->getVisibleOrigin();
     auto size = Director::getInstance()->getVisibleSize();
     
@@ -30,7 +33,7 @@ bool ModFoodShow::init()
     auto* back_layer = LayerColor::create(Color4B(244, 245, 255, 255));
     back_layer->setContentSize(this->getContentSize());
 
-    back_layer->setPosition(Vec2(origin.x, this->getPositionY()));
+//    back_layer->setPosition(Vec2(origin.x, this->getPositionY()));
     addChild(back_layer,1);
     InitFoodShow();
 //    this->scheduleUpdate();
@@ -56,8 +59,9 @@ ModFoodShow* ModFoodShow::Create(int id)
 
 void ModFoodShow::update(float dt)
 {
-    if (0 == ModHttp::GetSocksDone())
+    if (0 == ModHttp::GetGoInt())
     {
+        ModHttp::SetGoInting();
         ModHttp::SetGetSocksing();
         InitFoodShow();
     }

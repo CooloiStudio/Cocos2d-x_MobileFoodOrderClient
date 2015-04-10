@@ -39,19 +39,19 @@ void ModCustom::InitFood()
     layer_list_->setBounceable(true);
     layer_list_->setDirection(ScrollView::Direction::VERTICAL);
     addChild(layer_list_,2);
-    layer_list_->setPosition(Vec2(origin.x + layer_list_->getPositionX(),
+    layer_list_->setPosition(Vec2(origin.x,
                                   layer_list_->getPositionY()));
     auto* food = ModFoodShow::Create(0);
 //    food->setPosition(origin.x,layer_list_->getPositionY() + Director::getInstance()->getVisibleSize().height * 4 / 5 - layer_top_->getContentSize().height);
     log("add first food");
-    food->setPosition(origin.x,origin.y);
+    food->setPosition(-origin.x,origin.y);
     layer_list_->addChild(food);
     layer_food_.push_back(food);
     
     for (int i = 0 ; i < 8 ; i++)
     {
         auto* food1 = ModFoodShow::Create(0);
-        food1->setPosition(origin.x,
+        food1->setPosition(-origin.x,
                            layer_food_[layer_food_.size() - 1]->getPositionY() + food1->getContentSize().height + 5);
         layer_list_->addChild(food1);
         layer_food_.push_back(food1);
@@ -87,9 +87,7 @@ void ModCustom::InitTop()
     auto size = Director::getInstance()->getVisibleSize();
     layer_top_ = LayerColor::create(Color4B(249, 249, 249, 255));
     layer_top_->setContentSize(Size(size.width,size.height / 15));
-//    layer_top_->setPosition(Vec2(origin.x + 0,origin.y + size.height / 15 * 14));
-    
-        layer_top_->setPosition(Vec2(200,500));
+    layer_top_->setPosition(Vec2(origin.x + 0,origin.y + size.height / 15 * 14));
     layer_top_->setCascadeColorEnabled(true);
 //    layer_top_->setColor(Color3B(128,128,128));
     

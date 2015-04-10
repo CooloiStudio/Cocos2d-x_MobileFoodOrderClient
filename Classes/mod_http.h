@@ -24,6 +24,7 @@ public:
     bool init();
     static ModHttp* Create();
     static int get_socks_;
+    static int go_int_;
 
     
 public:
@@ -33,6 +34,10 @@ public:
     static void SetGetSocksDone(){get_socks_ = 0;}
     static void SetGetSocksing(){get_socks_ = -1;}
     static int GetSocksDone(){return get_socks_;}
+    
+    static void SetGoIntDone(){go_int_ = 0;}
+    static void SetGoInting(){go_int_ = -1;}
+    static int GetGoInt(){return go_int_;}
 };
 
 #endif /* defined(__MobileFoodOrderClient__mod_http__) */
