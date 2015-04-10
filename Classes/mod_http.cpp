@@ -39,6 +39,7 @@ bool ModHttp::init()
     
 }
 
+int ModHttp::get_socks_(-1);
 
 int ModHttp::DownloadPicture(int img_id)
 {
