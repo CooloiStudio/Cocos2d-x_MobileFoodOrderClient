@@ -25,14 +25,15 @@ bool ModFoodShow::init()
     auto origin = Director::getInstance()->getVisibleOrigin();
     auto size = Director::getInstance()->getVisibleSize();
     
-    this->setContentSize(Size(size.width,size.height / 5));
+    this->setContentSize(Size(size.width, size.height / 5));
     
     auto* back_layer = LayerColor::create(Color4B(244, 245, 255, 255));
     back_layer->setContentSize(this->getContentSize());
-    back_layer->setPosition(this->getPosition());
+
+    back_layer->setPosition(Vec2(origin.x, this->getPositionY()));
     addChild(back_layer,1);
-//    InitFoodShow();
-    this->scheduleUpdate();
+    InitFoodShow();
+//    this->scheduleUpdate();
     return true;
 }
 
@@ -70,8 +71,8 @@ int ModFoodShow::InitFoodShow()
     img_ = Sprite::create(path);
     img_->setScale(this->getContentSize().height * 0.9 / img_->getContentSize().height );
     img_->setAnchorPoint(Vec2(0,0));
-    img_->setPosition(Vec2(this->getPosition().x + this->getContentSize().height * 0.05,
-                           this->getPosition().y + this->getContentSize().height * 0.05));
+    img_->setPosition(Vec2(this->getContentSize().height * 0.05,
+                           this->getContentSize().height * 0.05));
     addChild(img_,3);
     
     auto name = Label::createWithSystemFont("魅汁炒饭", "Arial", 24);
@@ -79,22 +80,22 @@ int ModFoodShow::InitFoodShow()
                               this->getContentSize().height * 1 / 4));
     name->setAnchorPoint(Vec2(0,0));
     name->setTextColor(Color4B(0,0,0,255));
-    name->setPosition(Vec2(this->getPosition().x + this->getContentSize().width * 2 / 5,
-                           this->getPosition().y + this->getContentSize().height * 3 / 4));
+    name->setPosition(Vec2(this->getContentSize().width * 2 / 5,
+                           this->getContentSize().height * 3 / 4));
     addChild(name,3);
     
     auto button_info = Button::create("shop_button.png");
     button_info->setScale(this->getContentSize().width / (button_info->getContentSize().width * 6));
     button_info->setAnchorPoint(Vec2(0,0));
-    button_info->setPosition(Vec2(this->getPosition().x + this->getContentSize().width * 3 / 5,
-                                  this->getPosition().y + this->getContentSize().height * 1 / 5));
+    button_info->setPosition(Vec2(this->getContentSize().width * 3 / 5,
+                                  this->getContentSize().height * 1 / 5));
     addChild(button_info,3);
     
     auto button_shop = Button::create("info_button.png");
     button_shop->setScale(this->getContentSize().width / (button_shop->getContentSize().width * 6));
     button_shop->setAnchorPoint(Vec2(0,0));
-    button_shop->setPosition(Vec2(this->getPosition().x + this->getContentSize().width * 4 / 5,
-                           this->getPosition().y + this->getContentSize().height * 1 / 5));
+    button_shop->setPosition(Vec2(this->getContentSize().width * 4 / 5,
+                                  this->getContentSize().height * 1 / 5));
     addChild(button_shop,3);
     
     log("food show over");

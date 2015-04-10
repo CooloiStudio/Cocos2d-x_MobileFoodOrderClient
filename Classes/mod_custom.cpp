@@ -32,16 +32,15 @@ bool ModCustom::init()
 
 void ModCustom::InitFood()
 {
+    auto origin = Director::getInstance()->getVisibleOrigin();
 //    layer_ = Layer::create();
     layer_list_ = ScrollView::create();
     layer_list_->setViewSize(Size(Director::getInstance()->getVisibleSize().width,Director::getInstance()->getVisibleSize().height - layer_top_->getContentSize().height));
     layer_list_->setBounceable(true);
     layer_list_->setDirection(ScrollView::Direction::VERTICAL);
     addChild(layer_list_,2);
-    
-    layer_list_->setPosition(Vec2(layer_list_->getPositionX(),
+    layer_list_->setPosition(Vec2(origin.x + layer_list_->getPositionX(),
                                   layer_list_->getPositionY()));
-    auto origin = Director::getInstance()->getVisibleOrigin();
     auto* food = ModFoodShow::Create(0);
 //    food->setPosition(origin.x,layer_list_->getPositionY() + Director::getInstance()->getVisibleSize().height * 4 / 5 - layer_top_->getContentSize().height);
     log("add first food");
@@ -65,6 +64,10 @@ void ModCustom::InitFood()
                                      layer_food_.size() * (food->getContentSize().height + 5)));
     layer_list_->setContentOffset(Vec2(layer_list_->getPositionX(),
                                   0 -layer_list_->getContentSize().height + Director::getInstance()->getVisibleSize().height - layer_top_->getContentSize().height));
+    
+//    auto layer = LayerColor::create(Color4B(0,0,0,255));
+////    layer->setContentSize(Size(2048,200));
+//    layer_list_->addChild(layer,60);
     log("add layer list");
     AddListener();
     
@@ -84,7 +87,9 @@ void ModCustom::InitTop()
     auto size = Director::getInstance()->getVisibleSize();
     layer_top_ = LayerColor::create(Color4B(249, 249, 249, 255));
     layer_top_->setContentSize(Size(size.width,size.height / 15));
-    layer_top_->setPosition(Vec2(origin.x + 0,origin.y + size.height / 15 * 14));
+//    layer_top_->setPosition(Vec2(origin.x + 0,origin.y + size.height / 15 * 14));
+    
+        layer_top_->setPosition(Vec2(200,500));
     layer_top_->setCascadeColorEnabled(true);
 //    layer_top_->setColor(Color3B(128,128,128));
     
