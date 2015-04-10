@@ -35,8 +35,8 @@ bool ModFoodShow::init()
 
 //    back_layer->setPosition(Vec2(origin.x, this->getPositionY()));
     addChild(back_layer,1);
-    InitFoodShow();
-//    this->scheduleUpdate();
+//    InitFoodShow();
+    this->scheduleUpdate();
     return true;
 }
 
@@ -61,8 +61,9 @@ void ModFoodShow::update(float dt)
 {
     if (0 == ModHttp::GetGoInt())
     {
-        ModHttp::SetGoInting();
-        ModHttp::SetGetSocksing();
+//        ModHttp::SetGoInting();
+//        ModHttp::SetGetSocksing();
+        this->unscheduleUpdate();
         InitFoodShow();
     }
 }
