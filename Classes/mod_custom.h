@@ -58,6 +58,7 @@ public:
     
     void ScrollViewDidScroll(ScrollView* view);
     
+    
 };
 
 #endif /* defined(__MobileFoodOrderClient__mod_custom__) */

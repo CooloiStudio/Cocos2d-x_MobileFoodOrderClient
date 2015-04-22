@@ -38,6 +38,14 @@ public:
     static void SetGoIntDone(){go_int_ = 0;}
     static void SetGoInting(){go_int_ = -1;}
     static int GetGoInt(){return go_int_;}
+    
+    
+    void UserLogIn();
+    void LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
+    
+    void UserLogOut();
+    void UserTest();
+    
 };
 
 #endif /* defined(__MobileFoodOrderClient__mod_http__) */

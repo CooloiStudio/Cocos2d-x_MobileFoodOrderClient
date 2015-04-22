@@ -27,6 +27,7 @@ bool ModCustom::init()
     InitTop();
     InitFood();
     addChild(layer_background, 0);
+
     return true;
 }
 

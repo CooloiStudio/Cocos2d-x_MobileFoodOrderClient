@@ -45,6 +45,8 @@ bool ModMainMenu::init(int login)
 {
     login_ = login;
     
+//    http_->UserLogIn();
+    
     auto background = Sprite::create();
     background->setAnchorPoint(Vec2(0,0));
 //    auto background = LayerColor::create(Color4B(240,240,255,255));
@@ -238,11 +240,12 @@ void ModMainMenu::ButtonLoginCallback(cocos2d::Ref *pSender, Widget::TouchEventT
     switch (type) {
         case cocos2d::ui::Widget::TouchEventType::ENDED:
         {
-            LogInfo::SetLogIn();
-            log("login");
-            auto* scene = ModCustom::createScene();
-            auto etc = TransitionMoveInR::create(0.5, scene);
-            Director::getInstance()->pushScene(etc);
+            UserLogIn();
+//            LogInfo::SetLogIn();
+//            log("login");
+//            auto* scene = ModCustom::createScene();
+//            auto etc = TransitionMoveInR::create(0.5, scene);
+//            Director::getInstance()->pushScene(etc);
         }
             break;
         default:
@@ -252,29 +255,106 @@ void ModMainMenu::ButtonLoginCallback(cocos2d::Ref *pSender, Widget::TouchEventT
 
 void ModMainMenu::ButtonCancelCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
 {
-    Director::getInstance()->popScene();
+//    Director::getInstance()->popScene();
+    http_->UserTest();
 }
 
 void ModMainMenu::ButtonSignupCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
 {
-    Director::getInstance()->pushScene(createScene(-1));
+    http_->UserLogOut();
+//    Director::getInstance()->pushScene(createScene(-1));
 }
 
 
 void ModMainMenu::ButtonLogoutCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
 {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-    MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
-    return;
-#endif
     
-    Director::getInstance()->end();
-    
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    exit(0);
-#endif
+//    http_->UserTest();
+    Director::getInstance()->popScene();
+//#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
+//    MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
+//    return;
+//#endif
+//    
+//    Director::getInstance()->end();
+//    
+//#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+//    exit(0);
+//#endif
 }
 
 
+#pragma mark - Network
+
+void ModMainMenu::LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response)
+{
+    if (!response) {
+        return;
+    }
+    
+    if (!response->isSucceed()) {
+        CCLOG("error %s", response->getErrorBuffer());
+        return;
+    }
+    
+    //    response->getResponseDataString()
+    
+    int statusCode = response->getResponseCode();
+    char statusString[64] = {};
+    sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
+    //    _labelStatusCode->setString(statusString);
+    log("response code: %d", statusCode);
+    
+    
+    if (response->isSucceed())
+    {
+        std::string str = "";
+        
+        std::vector<char>* v = response->getResponseData();
+        for (int i = 0; i < v->size(); i++)
+        {
+//            printf("%c", v->at(i));
+            str = str + v->at(i);
+        }
+        log("%s",str.c_str());
+        printf("\n");
+        
+        rapidjson::Document d1;
+        d1.Parse<0>(str.c_str());
+        
+        if (d1.HasParseError())
+            return;
+        
+        assert(d1.IsObject());
+        
+        
+        
+    }
+    
+    
+    
+}
+
+void ModMainMenu::UserLogIn()
+{
+    log("POST");
+    HttpRequest *request = new HttpRequest();
+    request->setRequestType(HttpRequest::Type::POST);
+    //    request->setRequestType(HttpRequest::Type::GET);
+    request->setTag("POST test");
+    //    request->setUrl("http://d.hiphotos.baidu.com/image/pic/item/d50735fae6cd7b8985adc8980d2442a7d8330ee3.jpg");
+    
+    request->setUrl("http://192.168.2.152:8000/clientlogin/");
+    std::string str = "username=" + user_name_ + "&password=" + user_password_;
+    request->setRequestData(str.c_str(), str.size());
+    
+    
+    
+    
+    request->setResponseCallback(CC_CALLBACK_2(ModMainMenu::LogInCallback, this));
+    //    HttpClient::getInstance()->sendImmediate(request);
+    HttpClient::getInstance()->send(request);
+    request->release();
+}
 
 

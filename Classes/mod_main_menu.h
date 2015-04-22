@@ -14,6 +14,14 @@
 #include "cocos-ext.h"
 #include "mod_custom.h"
 #include "Info.h"
+#include "network/HttpClient.h"
+
+
+#include "json/document.h"
+#include "json/rapidjson.h"
+#include "json/writer.h"
+#include "json/stringbuffer.h"
+//#include ""
 
 USING_NS_CC;
 using namespace ui;
@@ -32,6 +40,8 @@ private:
     cocos2d::ui::EditBox* edit_name_;
     cocos2d::ui::EditBox* edit_pass_;
     cocos2d::ui::EditBox* edit_id_;
+    
+    ModHttp* http_;
     
 #pragma mark - Initialization
 public:
@@ -63,6 +73,8 @@ public:
     void ButtonCancelCallback(Ref* pSender, Widget::TouchEventType type);
     
     
+    void UserLogIn();
+    void LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     
 };
 

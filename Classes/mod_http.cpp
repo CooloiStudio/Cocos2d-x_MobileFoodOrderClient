@@ -58,6 +58,8 @@ int ModHttp::DownloadPicture(int img_id)
     return 0;
 }
 
+
+
 void ModHttp::OnDownloadComplete(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response)
 {
     if (!response) {
@@ -83,3 +85,101 @@ void ModHttp::OnDownloadComplete(cocos2d::network::HttpClient *sender, cocos2d::
         SetGetSocksDone();
     }
 }
+
+void ModHttp::LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response)
+{
+    if (!response) {
+        return;
+    }
+    
+    if (!response->isSucceed()) {
+        CCLOG("error %s", response->getErrorBuffer());
+        return;
+    }
+    
+//    response->getResponseDataString()
+    
+    int statusCode = response->getResponseCode();
+    char statusString[64] = {};
+    sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
+//    _labelStatusCode->setString(statusString);
+    log("response code: %d", statusCode);
+    
+    if (response->isSucceed())
+    {
+        
+        std::vector<char>* v = response->getResponseData();
+        for (int i = 0; i < v->size(); i++)
+        {
+            printf("%c", v->at(i));
+        }
+        printf("\n");
+    }
+    char test[64] = {};
+    
+//    sprintf(test, response->getResponseDataString());
+    
+    
+}
+
+void ModHttp::UserLogIn()
+{
+    log("POST");
+    HttpRequest *request = new HttpRequest();
+    request->setRequestType(HttpRequest::Type::POST);
+//    request->setRequestType(HttpRequest::Type::GET);
+    request->setTag("POST test");
+    //    request->setUrl("http://d.hiphotos.baidu.com/image/pic/item/d50735fae6cd7b8985adc8980d2442a7d8330ee3.jpg");
+    
+    request->setUrl("http://192.168.2.152:8000/clientlogin/");
+    std::string str = "username=123&password=123";
+    request->setRequestData(str.c_str(), str.size());
+
+
+    
+    
+    request->setResponseCallback(CC_CALLBACK_2(ModHttp::LogInCallback, this));
+//    HttpClient::getInstance()->sendImmediate(request);
+    HttpClient::getInstance()->send(request);
+    request->release();
+}
+
+
+void ModHttp::UserLogOut()
+{
+    log("GET");
+    HttpRequest *request = new HttpRequest();
+    request->setRequestType(HttpRequest::Type::GET);
+    request->setTag("POST test");
+    
+    request->setUrl("http://192.168.2.152:8000/clientlogin/");
+    std::string str = "username=123&password=123";
+    //    request->setRequestData(str.c_str(), str.size());
+    
+    
+    
+    request->setResponseCallback(CC_CALLBACK_2(ModHttp::LogInCallback, this));
+    HttpClient::getInstance()->send(request);
+    request->release();
+}
+
+
+void ModHttp::UserTest()
+{
+    log("Test 8000");
+    HttpRequest *request = new HttpRequest();
+    request->setRequestType(HttpRequest::Type::GET);
+    request->setTag("POST test");
+    
+    request->setUrl("http://192.168.2.152:8000/");
+    std::string str = "username=123&password=123";
+    //    request->setRequestData(str.c_str(), str.size());
+    
+    
+    
+    request->setResponseCallback(CC_CALLBACK_2(ModHttp::LogInCallback, this));
+    HttpClient::getInstance()->send(request);
+    request->release();
+    
+}
+
