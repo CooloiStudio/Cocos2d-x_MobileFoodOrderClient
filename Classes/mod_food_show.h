@@ -61,6 +61,8 @@ public:
     void SetFoodId(int food_id){food_id_ = food_id;}
     int GetFoodId() {return food_id_;}
     
+
+    
 #pragma mark - Function
     
     int InitFoodShow();

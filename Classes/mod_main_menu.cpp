@@ -102,30 +102,70 @@ void ModMainMenu::CreateEdit()
     edit_pass_->setFontColor(Color3B(0,0,0));
 //    edit_pass_->setFontSize(24);
     edit_pass_->setDelegate(this);
-    edit_pass_->setInputFlag(cocos2d::ui::EditBox::InputFlag::PASSWORD);
     addChild(edit_pass_,1);
     
-    auto label_name = Label::createWithSystemFont("用户名:", "Airal", 20);
-    label_name->setDimensions(edit_name_->getContentSize().width ,edit_name_->getContentSize().height  );
-    label_name->setAnchorPoint(Vec2(0.5, 0.5));
-    label_name->setAlignment(cocos2d::TextHAlignment::CENTER);
-    label_name->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
-    label_name->setPosition(Vec2(origin.x + (edit_name_->getPositionX() - label_name->getContentSize().width / 2) / 2,
-                                 origin.y + edit_name_->getPositionY()));
-    label_name->enableShadow();
-    label_name->setTextColor(Color4B(240,240,255,255));
-    addChild(label_name,1);
+    if (233 != login_)
+    {
+        edit_pass_->setInputFlag(cocos2d::ui::EditBox::InputFlag::PASSWORD);
+        auto label_name = Label::createWithSystemFont("用户名:", "Airal", 30);
+        label_name->setDimensions(edit_name_->getContentSize().width ,edit_name_->getContentSize().height  );
+        label_name->setAnchorPoint(Vec2(0.5, 0.5));
+        label_name->setAlignment(cocos2d::TextHAlignment::CENTER);
+        label_name->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+        label_name->setPosition(Vec2(origin.x + (edit_name_->getPositionX() - label_name->getContentSize().width / 2) / 2,
+                                     origin.y + edit_name_->getPositionY()));
+        label_name->enableShadow();
+        label_name->setTextColor(Color4B(240,240,255,255));
+        addChild(label_name,1);
+        
+        auto label_pass = Label::createWithSystemFont("密码:", "Airal", 30);
+        label_pass->setDimensions(edit_name_->getContentSize().width,edit_name_->getContentSize().height );
+        label_pass->setAnchorPoint(Vec2(0.5, 0.5));
+        label_pass->setAlignment(cocos2d::TextHAlignment::CENTER);
+        label_pass->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+        label_pass->setPosition(Vec2(origin.x + (edit_pass_->getPositionX() - edit_pass_->getContentSize().width / 2) / 2,
+                                     origin.y + edit_pass_->getPositionY()));
+        label_pass->enableShadow();
+        label_pass->setTextColor(Color4B(240,240,255,255));
+        addChild(label_pass,1);
+    }
+    else
+    {
+        
+        user_name_ =ConfigJson::GetConfigIp();
+        edit_name_->setPlaceHolder(user_name_.c_str());
+        edit_name_->setPlaceholderFontColor(Color3B(0,0,0));
+        edit_name_->setPlaceholderFontSize(10);
+        edit_name_->setFontSize(24);
+        user_password_ = ConfigJson::GetConfigPort();
+        edit_pass_->setPlaceholderFontSize(10);
+        edit_pass_->setPlaceholderFontColor(Color3B(0,0,0));
+        edit_pass_->setPlaceHolder(user_password_.c_str());
+
+        auto label_name = Label::createWithSystemFont("地址:", "Airal", 30);
+        label_name->setDimensions(edit_name_->getContentSize().width ,edit_name_->getContentSize().height  );
+        label_name->setAnchorPoint(Vec2(0.5, 0.5));
+        label_name->setAlignment(cocos2d::TextHAlignment::CENTER);
+        label_name->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+        label_name->setPosition(Vec2(origin.x + (edit_name_->getPositionX() - label_name->getContentSize().width / 2) / 2,
+                                     origin.y + edit_name_->getPositionY()));
+        label_name->enableShadow();
+        label_name->setTextColor(Color4B(240,240,255,255));
+        addChild(label_name,1);
+        
+        auto label_pass = Label::createWithSystemFont("端口:", "Airal", 30);
+        label_pass->setDimensions(edit_name_->getContentSize().width,edit_name_->getContentSize().height );
+        label_pass->setAnchorPoint(Vec2(0.5, 0.5));
+        label_pass->setAlignment(cocos2d::TextHAlignment::CENTER);
+        label_pass->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+        label_pass->setPosition(Vec2(origin.x + (edit_pass_->getPositionX() - edit_pass_->getContentSize().width / 2) / 2,
+                                     origin.y + edit_pass_->getPositionY()));
+        label_pass->enableShadow();
+        label_pass->setTextColor(Color4B(240,240,255,255));
+        addChild(label_pass,1);
+
+    }
     
-    auto label_pass = Label::createWithSystemFont("密码:", "Airal", 20);
-    label_pass->setDimensions(edit_name_->getContentSize().width,edit_name_->getContentSize().height );
-    label_pass->setAnchorPoint(Vec2(0.5, 0.5));
-    label_pass->setAlignment(cocos2d::TextHAlignment::CENTER);
-    label_pass->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
-    label_pass->setPosition(Vec2(origin.x + (edit_pass_->getPositionX() - edit_pass_->getContentSize().width / 2) / 2,
-                                 origin.y + edit_pass_->getPositionY()));
-    label_pass->enableShadow();
-    label_pass->setTextColor(Color4B(240,240,255,255));
-    addChild(label_pass,1);
 
     if (login_ == -1)
     {
@@ -138,7 +178,7 @@ void ModMainMenu::CreateEdit()
         edit_id_->setDelegate(this);
         addChild(edit_id_,1);
         
-        auto label_id = Label::createWithSystemFont("学号:", "Airal", 20);
+        auto label_id = Label::createWithSystemFont("学号:", "Airal", 30);
         label_id->setDimensions(edit_name_->getContentSize().width,edit_name_->getContentSize().height );
         label_id->setAnchorPoint(Vec2(0.5, 0.5));
         label_id->setAlignment(cocos2d::TextHAlignment::LEFT);
@@ -212,6 +252,24 @@ void ModMainMenu::CreateButton()
     logout->addTouchEventListener(CC_CALLBACK_2(ModMainMenu::ButtonLogoutCallback, this));
     addChild(logout,1);
     }
+    
+    else if(233 == login_)
+    {
+        auto submit = Button::create("changed.png");
+        submit->setScale(scale);
+        submit->setAnchorPoint(Vec2(0.5,0.5));
+        submit->setPosition(Vec2(origin.x + size.width  /3,
+                                 origin.y + edit_pass_->getPositionY() - edit_pass_->getContentSize().height * 1.5));
+        submit->addTouchEventListener(CC_CALLBACK_2(ModMainMenu::ButtonUpdateCallback, this));
+        addChild(submit,1);
+        
+        //离开
+        auto logout = Button::create("close.png");
+        logout->setPosition(Vec2(origin.x + Director::getInstance()->getVisibleSize().width - logout->getContentSize().width,origin.y + logout->getContentSize().height));
+        logout->addTouchEventListener(CC_CALLBACK_2(ModMainMenu::ButtonLogoutCallback, this));
+        addChild(logout,1);
+    }
+    
     else
     {
         auto cancel = Button::create("cancel.png");
@@ -234,6 +292,12 @@ void ModMainMenu::CreateButton()
         
     }
     
+}
+
+void ModMainMenu::ButtonUpdateCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
+{
+    ConfigJson::SetConfigIp(user_name_);
+    ConfigJson::SetConfigPort(user_password_);
 }
 
 void ModMainMenu::ButtonLoginCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)

@@ -16,6 +16,7 @@
 #include "Info.h"
 #include "network/HttpClient.h"
 #include "mod_custom_info.h"
+#include "mod_config_json.h"
 
 #include "json/document.h"
 #include "json/rapidjson.h"
@@ -71,6 +72,8 @@ public:
     void ButtonLogoutCallback(Ref* pSender, Widget::TouchEventType type);
     
     void ButtonCancelCallback(Ref* pSender, Widget::TouchEventType type);
+    
+    void ButtonUpdateCallback(Ref* pSender, Widget::TouchEventType type);
     
     
     void UserLogIn();

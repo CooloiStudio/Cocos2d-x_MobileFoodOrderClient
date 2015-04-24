@@ -61,6 +61,7 @@ public:
     void GetInfo();
     void GetInfoCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     
+    
 #pragma mark - TableView
     
     void CreateTableView();

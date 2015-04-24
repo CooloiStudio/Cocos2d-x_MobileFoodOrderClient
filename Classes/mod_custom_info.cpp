@@ -380,32 +380,76 @@ extension::TableViewCell* ModCustomInfo::tableCellAtIndex(extension::TableView *
     if (table_num_ - 1 == idx)
         idx = 99;
     
+    
+    
+
+    
+    auto label = Label::createWithSystemFont("", "Arial", 30);
+    //        label->setContentSize(Size( size.width / 2, size.height / 10));
+    label->setDimensions( size.width, size.height / 6);
+    label->setTextColor(Color4B(0,0,0,255));
+    label->setAnchorPoint(Vec2(0,0));
+    label->setAlignment(cocos2d::TextHAlignment::LEFT);
+    label->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+    label->setPosition(Vec2(size.width / 8, 0 ));
+    
     switch (idx) {
         case 0:
+        {
+            int i = 0;
+            label_str = user[i].GetString();
+            label_str = "用户名: " + label_str;
+            label->setString(label_str.c_str());
+            label->setPosition(Vec2(size.width / 8,
+                                    table->getContentSize().height / 6));
+            
             label_str = user[1].GetString();
+            label_str = "学号 : " + label_str;
+            auto id = Label::createWithSystemFont(label_str.c_str(), "Arial", 30);
+            id->setDimensions( size.width, size.height / 6);
+            id->setTextColor(Color4B(0,0,0,255));
+            id->setAnchorPoint(Vec2(0,0));
+            id->setAlignment(cocos2d::TextHAlignment::LEFT);
+            id->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+            id->setPosition(Vec2(size.width / 8,
+                                 0));
 
+            cell->addChild(id);
+            
+            label_str = "True";
+//            log("%s",user[2].GetString());
+            if (label_str == user[2].GetString())
+            {
+                label_str = "管饭的";
+            }
+            else
+            {
+                label_str = "普通吃货";
+            }
+            
+            label_str = "用户权限: " + label_str;
+            auto root = Label::createWithSystemFont(label_str.c_str(), "Arial", 30);
+            root->setDimensions( size.width, size.height / 6);
+            root->setTextColor(Color4B(0,0,0,255));
+            root->setAnchorPoint(Vec2(0,0));
+            root->setAlignment(cocos2d::TextHAlignment::LEFT);
+            root->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+            root->setPosition(Vec2(size.width / 8,
+                                    -table->getContentSize().height / 6));
+            
+            cell->addChild(root);
+            
+            
+        }
             break;
             
         case 99:
-            label_str = "退出登录";
+            label->setString("退出登录");
             break;
             
         default:
             break;
     }
-    
-
-    
-    auto label = Label::createWithSystemFont(label_str.c_str(), "Arial", 30);
-    //        label->setContentSize(Size( size.width / 2, size.height / 10));
-    label->setDimensions( size.width, size.height / 6);
-    label->setTextColor(Color4B(0,0,0,255));
-    label->setAnchorPoint(Vec2(0,0));
-    label->setPosition(Vec2(size.width / 8, 0 ));
-//    label->setAnchorPoint(0,0);
-    //        label->setPosition(bg_sprite->getContentSize().width / 2, bg_sprite->getContentSize().height / 2);
-    label->setAlignment(cocos2d::TextHAlignment::LEFT);
-    label->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
     cell->addChild(label);
     
 
