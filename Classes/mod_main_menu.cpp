@@ -7,6 +7,7 @@
 //
 
 #include "mod_main_menu.h"
+#include "mod_custom.h"
 
 ModMainMenu::ModMainMenu()
 {
@@ -87,7 +88,7 @@ void ModMainMenu::CreateEdit()
     
     auto origin = Director::getInstance()->getVisibleOrigin();
     auto size = Director::getInstance()->getVisibleSize();
-    edit_name_ = EditBox::create(Size(size.width * 0.3,size.height * 0.06 ), "bt.png");
+    edit_name_ = EditBox::create(Size(size.width * 0.5,size.height * 0.1 ), "bt.png");
     edit_name_->setPosition(Vec2(origin.x + size.width / 2,origin.y + size.height * 3 / 5));
     edit_name_->setMaxLength(16);
     edit_name_->setFontColor(Color3B(0,0,0));
@@ -95,7 +96,7 @@ void ModMainMenu::CreateEdit()
     edit_name_->setDelegate(this);
     addChild(edit_name_,1);
     
-    edit_pass_ = EditBox::create(Size(size.width * 0.3,size.height * 0.06 ), "bt.png");
+    edit_pass_ = EditBox::create(Size(size.width * 0.5,size.height * 0.1 ), "bt.png");
     edit_pass_->setPosition(Vec2(origin.x + size.width / 2,origin.y + edit_name_->getPositionY() - edit_pass_->getContentSize().height * 1.5 ));
     edit_pass_->setMaxLength(16);
     edit_pass_->setFontColor(Color3B(0,0,0));
@@ -109,7 +110,7 @@ void ModMainMenu::CreateEdit()
     label_name->setAnchorPoint(Vec2(0.5, 0.5));
     label_name->setAlignment(cocos2d::TextHAlignment::CENTER);
     label_name->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
-    label_name->setPosition(Vec2(origin.x + edit_name_->getPositionX() - label_name->getContentSize().width,
+    label_name->setPosition(Vec2(origin.x + (edit_name_->getPositionX() - label_name->getContentSize().width / 2) / 2,
                                  origin.y + edit_name_->getPositionY()));
     label_name->enableShadow();
     label_name->setTextColor(Color4B(240,240,255,255));
@@ -120,7 +121,7 @@ void ModMainMenu::CreateEdit()
     label_pass->setAnchorPoint(Vec2(0.5, 0.5));
     label_pass->setAlignment(cocos2d::TextHAlignment::CENTER);
     label_pass->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
-    label_pass->setPosition(Vec2(origin.x + edit_pass_->getPositionX()  - label_pass->getContentSize().width,
+    label_pass->setPosition(Vec2(origin.x + (edit_pass_->getPositionX() - edit_pass_->getContentSize().width / 2) / 2,
                                  origin.y + edit_pass_->getPositionY()));
     label_pass->enableShadow();
     label_pass->setTextColor(Color4B(240,240,255,255));
@@ -184,7 +185,7 @@ void ModMainMenu::CreateButton()
     auto origin = Director::getInstance()->getVisibleOrigin();
     auto size = Director::getInstance()->getVisibleSize();
     auto signup = Button::create("signup.png");
-    auto scale = Director::getInstance()->getVisibleSize().width / (signup->getContentSize().width * 8);
+    auto scale = Director::getInstance()->getVisibleSize().width / (signup->getContentSize().width * 4);
     
     if (login_ == 0)
     {
@@ -193,7 +194,7 @@ void ModMainMenu::CreateButton()
     //登陆
     login->setScale(scale);
     login->setAnchorPoint(Vec2(0.5,0.5));
-    login->setPosition(Vec2(origin.x + size.width * 4/10 ,
+    login->setPosition(Vec2(origin.x + size.width  /3,
                             origin.y + edit_pass_->getPositionY() - edit_pass_->getContentSize().height * 1.5));
     login->addTouchEventListener(CC_CALLBACK_2(ModMainMenu::ButtonLoginCallback, this));
     addChild(login,1);
@@ -201,7 +202,7 @@ void ModMainMenu::CreateButton()
     //注册
     signup->setScale(scale);
     signup->setAnchorPoint(Vec2(0.5,0.5));
-    signup->setPosition(Vec2(origin.x + size.width * 6/10 ,
+    signup->setPosition(Vec2(origin.x + size.width *2 / 3,
                              origin.y + edit_pass_->getPositionY() - edit_pass_->getContentSize().height * 1.5));
     signup->addTouchEventListener(CC_CALLBACK_2(ModMainMenu::ButtonSignupCallback, this));
     addChild(signup,1);
@@ -241,7 +242,7 @@ void ModMainMenu::ButtonLoginCallback(cocos2d::Ref *pSender, Widget::TouchEventT
         case cocos2d::ui::Widget::TouchEventType::ENDED:
         {
             UserLogIn();
-//            LogInfo::SetLogIn();
+            LogInfo::SetLogIn();
 //            log("login");
 //            auto* scene = ModCustom::createScene();
 //            auto etc = TransitionMoveInR::create(0.5, scene);
@@ -270,7 +271,10 @@ void ModMainMenu::ButtonLogoutCallback(cocos2d::Ref *pSender, Widget::TouchEvent
 {
     
 //    http_->UserTest();
-    Director::getInstance()->popScene();
+//    Director::getInstance()->popScene();
+    
+    Director::getInstance()->replaceScene(ModCustom::createScene());
+    
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 //    MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
 //    return;
@@ -304,7 +308,11 @@ void ModMainMenu::LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::n
     sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
-    
+//    if (500 == statusCode)
+//    {
+//        UserLogIn();
+//        return;
+//    }
     
     if (response->isSucceed())
     {
@@ -323,10 +331,19 @@ void ModMainMenu::LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::n
         d1.Parse<0>(str.c_str());
         
         if (d1.HasParseError())
+        {
+            log("%s",d1.GetParseError());
             return;
+        }
         
         assert(d1.IsObject());
-        
+        std::string test = "succeed";
+        log ("%s",d1["response"].GetString());
+        if (test == d1["response"].GetString())
+        {
+            auto scene = ModCustomInfo::createScene();
+            Director::getInstance()->replaceScene(scene);
+        }
         
         
     }
@@ -340,16 +357,26 @@ void ModMainMenu::UserLogIn()
     log("POST");
     HttpRequest *request = new HttpRequest();
     request->setRequestType(HttpRequest::Type::POST);
-    //    request->setRequestType(HttpRequest::Type::GET);
     request->setTag("POST test");
-    //    request->setUrl("http://d.hiphotos.baidu.com/image/pic/item/d50735fae6cd7b8985adc8980d2442a7d8330ee3.jpg");
-    
-    request->setUrl("http://192.168.2.152:8000/clientlogin/");
-    std::string str = "username=" + user_name_ + "&password=" + user_password_;
-    request->setRequestData(str.c_str(), str.size());
+        auto str = "http://" + ConfigJson::GetConfigIp() + ":" + ConfigJson::GetConfigPort() + "/clientlogin/";
+    request->setUrl(str.c_str());
     
     
+//    std::string str = "{\"username\":\"" + user_name_ + "\",\"password\":\"" + user_password_ + "\"}";
     
+    rapidjson::Document d1;
+    rapidjson::Document::AllocatorType& allocator = d1.GetAllocator();
+    d1.SetObject();
+    
+    d1.AddMember("username", user_name_.c_str(), allocator);
+    d1.AddMember("password", user_password_.c_str(), allocator);
+    
+    rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> write(buffer);
+    d1.Accept(write);
+    log("%s",buffer.GetString());   
+    
+    request->setRequestData(buffer.GetString(), buffer.Size());
     
     request->setResponseCallback(CC_CALLBACK_2(ModMainMenu::LogInCallback, this));
     //    HttpClient::getInstance()->sendImmediate(request);

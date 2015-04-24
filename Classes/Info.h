@@ -21,6 +21,8 @@ class LogInfo : public Ref
 {
 private:
     static int login;
+    
+
 
 public:
     static int GetLogIn(){return login;}

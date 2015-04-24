@@ -17,6 +17,13 @@
 #include "mod_food_show.h"
 #include "mod_check.h"
 #include "info.h"
+#include "mod_config_json.h"
+
+#include "json/document.h"
+#include "json/rapidjson.h"
+#include "json/writer.h"
+#include "json/stringbuffer.h"
+#include "network/HttpClient.h"
 
 USING_NS_CC;
 using namespace ui;
@@ -28,8 +35,11 @@ private:
     Layer* layer_top_;
 //    Layer* layer_;
     ScrollView* layer_list_;
-    std::vector<ModFoodShow*> layer_food_;
+    std::vector<ModFoodShow*> food_;
     Vec2 touch_began_;
+    
+    std::string food_list_;
+    
     
     EventListener* listener_;
 #pragma mark - Initialization
@@ -41,8 +51,6 @@ public:
     CREATE_FUNC(ModCustom);
     
 public:
-    
-    
     
     void InitTop();
     void InitFood();
@@ -58,6 +66,14 @@ public:
     
     void ScrollViewDidScroll(ScrollView* view);
     
+#pragma mark - GetFood
+    
+    void GetFood();
+    
+    
+    void ListCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
+    
+    void GetList();
     
 };
 

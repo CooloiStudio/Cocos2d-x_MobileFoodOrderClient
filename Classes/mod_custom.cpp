@@ -23,9 +23,12 @@ Scene* ModCustom::createScene()
 
 bool ModCustom::init()
 {
+    ModHttp::SetGoInting();
+    ModHttp::SetGetSocksing();
     auto layer_background = LayerColor::create(Color4B(221,221,221,255));
     InitTop();
-    InitFood();
+//    InitFood();
+    GetList();
     addChild(layer_background, 0);
 
     return true;
@@ -42,27 +45,82 @@ void ModCustom::InitFood()
     addChild(layer_list_,2);
     layer_list_->setPosition(Vec2(origin.x,
                                   layer_list_->getPositionY()));
-    auto* food = ModFoodShow::Create(0);
-//    food->setPosition(origin.x,layer_list_->getPositionY() + Director::getInstance()->getVisibleSize().height * 4 / 5 - layer_top_->getContentSize().height);
-    log("add first food");
-    food->setPosition(-origin.x,origin.y);
-    layer_list_->addChild(food);
-    layer_food_.push_back(food);
     
-    for (int i = 0 ; i < 8 ; i++)
+    
+    rapidjson::Document d1;
+    d1.Parse<0>(food_list_.c_str());
+    
+    assert(d1.IsObject());
+    
+    std::string str = "succeed";
+    if (str != d1["response"].GetString() ||
+        1 >= d1["food"].Size())
     {
-        auto* food1 = ModFoodShow::Create(0);
-        food1->setPosition(-origin.x,
-                           layer_food_[layer_food_.size() - 1]->getPositionY() + food1->getContentSize().height + 5);
-        layer_list_->addChild(food1);
-        layer_food_.push_back(food1);
-        log("add food%d",i);
+        return;
     }
+    
+    int food_num = d1["food"].Size();
+//    auto address  = ;
+    
+    for (int i = 0 ; i < food_num ; i++)
+    {
+        ///////////////食物参数///////////////////
+        rapidjson::Document foodjson;
+        foodjson.SetObject();
+        rapidjson::Document::AllocatorType& allocator = foodjson.GetAllocator();
+        foodjson.AddMember("canteen", d1["food"][i]["canteen"].GetString(), allocator);
+        log("%s",d1["food"][i]["canteen"].GetString());
+        
+        foodjson.AddMember("name", d1["food"][i]["name"].GetString(), allocator);
+        log("%s",d1["food"][i]["name"].GetString());
+        
+        auto address = "http://" + ConfigJson::GetConfigIp() + ":" + ConfigJson::GetConfigPort() + d1["STATIC_URL"].GetString() + d1["food"][i]["img"].GetString();
+        foodjson.AddMember("img", address.c_str(), allocator);
+        log("%s",foodjson["img"].GetString());
+        
+        foodjson.AddMember("description", d1["food"][i]["description"].GetString(), allocator);
+        log("%s",d1["food"][i]["description"].GetString());
+        
+        rapidjson::StringBuffer buffer;
+        rapidjson::Writer<rapidjson::StringBuffer> write(buffer);
+        foodjson.Accept(write);
+        log("%s",buffer.GetString());
+        //////////////////////////////////////////
+        
+        
+        
+        auto* food = ModFoodShow::Create(i,buffer.GetString());
+        
+        log("add first food");
+        food->setPosition(-origin.x,origin.y);
+        
+        if (food_.size())
+        {
+            food->setPosition(-origin.x, food_[food_.size() - 1]->getPositionY() + food->getContentSize().height + 5);
+            
+        }
+        layer_list_->addChild(food);
+        food_.push_back(food);
+        
+        
+    }
+    
+
+    
+//    for (int i = 0 ; i < 8 ; i++)
+//    {
+//        auto* food1 = ModFoodShow::Create(0);
+//        food1->setPosition(-origin.x,
+//                           layer_food_[layer_food_.size() - 1]->getPositionY() + food1->getContentSize().height + 5);
+//        layer_list_->addChild(food1);
+//        layer_food_.push_back(food1);
+//        log("add food%d",i);
+//    }
 //    layer_list_->addChild(layer_);
 //    layer_->setContentSize(Size(Director::getInstance()->getVisibleSize().width,
 //                                     layer_food_.size() * 300));
     layer_list_->setContentSize(Size(Director::getInstance()->getVisibleSize().width,
-                                     layer_food_.size() * (food->getContentSize().height + 5)));
+                                     food_.size() * (food_[0]->getContentSize().height + 5)));
     layer_list_->setContentOffset(Vec2(layer_list_->getPositionX(),
                                   0 -layer_list_->getContentSize().height + Director::getInstance()->getVisibleSize().height - layer_top_->getContentSize().height));
     
@@ -137,11 +195,11 @@ void ModCustom::ButtonInfoCallback(cocos2d::Ref *pSender, Widget::TouchEventType
 {
     if (LogInfo::GetLogIn() == 0)
     {
-        Director::getInstance()->pushScene(ModCustomInfo::createScene());
+        Director::getInstance()->replaceScene(ModCustomInfo::createScene());
     }
     else
     {
-        Director::getInstance()->pushScene(ModMainMenu::createScene(0));
+        Director::getInstance()->replaceScene(ModMainMenu::createScene(0));
     }
     log("Touch Info");
 }
@@ -161,7 +219,7 @@ void ModCustom::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event)
     {
     
     auto location = this->convertToNodeSpace(touch->getLocation());
-    if (0 == ModCheck::CheckContainsPoint(layer_food_[0], layer_list_,location))
+    if (0 == ModCheck::CheckContainsPoint(food_[0], layer_list_,location))
     {
         log("touch in layer");
         return;
@@ -198,3 +256,80 @@ int ModCustom::AddListener()
     listener_ = listener;
     return 0;
 } // ModMsgBox::AddListener
+
+void ModCustom::ListCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response)
+{
+    if (!response) {
+        return;
+    }
+    
+    if (!response->isSucceed()) {
+        CCLOG("error %s", response->getErrorBuffer());
+        return;
+    }
+    
+    //    response->getResponseDataString()
+    
+    int statusCode = response->getResponseCode();
+    char statusString[64] = {};
+    sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
+    //    _labelStatusCode->setString(statusString);
+    log("response code: %d", statusCode);
+    
+    if (500 == statusCode)
+    {
+        GetList();
+        return;
+    }
+    
+    if (response->isSucceed())
+    {
+        food_list_ = "";
+        std::vector<char>* v = response->getResponseData();
+        for (int i = 0; i < v->size(); i++)
+        {
+            //            printf("%c", v->at(i));
+            food_list_ = food_list_ + v->at(i);
+        }
+        log("%s",food_list_.c_str());
+        printf("\n");
+        
+//        rapidjson::Document d1;
+//        d1.Parse<0>(food_list_.c_str());
+//        
+//        if (d1.HasParseError())
+//        {
+//            log("%s",d1.GetParseError());
+//            return;
+//        }
+//        assert(d1.IsObject());
+//        std::string test = "food";
+//        log ("%s",d1["response"].GetString());
+//        if (test == d1["response"].GetString())
+//        {
+//            //            auto scene = ModCustomInfo::createScene();
+//            //            Director::getInstance()->replaceScene(scene);
+//        }
+        InitFood();
+        
+    }
+    
+    //    sprintf(test, response->getResponseDataString());
+    
+    
+}
+
+void ModCustom::GetList()
+{
+    log("POST");
+    HttpRequest *request = new HttpRequest();
+    request->setRequestType(HttpRequest::Type::GET);
+    request->setTag("POST test");
+    
+    auto str = "http://" + ConfigJson::GetConfigIp() + ":" + ConfigJson::GetConfigPort() + "/clientfood/?choose=0";
+    request->setUrl(str.c_str());   
+    
+    request->setResponseCallback(CC_CALLBACK_2(ModCustom::ListCallback, this));
+    HttpClient::getInstance()->send(request);
+    request->release();
+}

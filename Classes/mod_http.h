@@ -25,7 +25,6 @@ public:
     static ModHttp* Create();
     static int get_socks_;
     static int go_int_;
-
     
 public:
     

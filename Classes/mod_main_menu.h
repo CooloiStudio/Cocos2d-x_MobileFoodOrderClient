@@ -15,7 +15,7 @@
 #include "mod_custom.h"
 #include "Info.h"
 #include "network/HttpClient.h"
-
+#include "mod_custom_info.h"
 
 #include "json/document.h"
 #include "json/rapidjson.h"
@@ -40,7 +40,7 @@ private:
     cocos2d::ui::EditBox* edit_name_;
     cocos2d::ui::EditBox* edit_pass_;
     cocos2d::ui::EditBox* edit_id_;
-    
+
     ModHttp* http_;
     
 #pragma mark - Initialization
