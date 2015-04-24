@@ -25,6 +25,8 @@
 #include "json/stringbuffer.h"
 #include "network/HttpClient.h"
 
+#include "custom_string.h"
+
 USING_NS_CC;
 using namespace extension;
 using namespace ui;

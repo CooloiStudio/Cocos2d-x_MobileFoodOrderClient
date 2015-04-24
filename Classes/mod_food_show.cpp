@@ -75,7 +75,7 @@ int ModFoodShow::InitFoodShow()
     
     auto scale = this->getContentSize().width / (200 * 4);
     
-    auto path = FileUtils::getInstance()->getWritablePath() + "food_" + std::to_string(food_id_) + ".png";
+    auto path = FileUtils::getInstance()->getWritablePath() + "food_" + custom_string::int_to_string(food_id_) + ".png";
     img_ = Sprite::create(path);
     img_->setScale(this->getContentSize().height * 0.9 / img_->getContentSize().height );
     img_->setAnchorPoint(Vec2(0,0));
@@ -257,17 +257,18 @@ void ModFoodShow::OnDownloadComplete(cocos2d::network::HttpClient *sender, cocos
         
         auto fileName = FileUtils::getInstance()->getWritablePath();
         fileName += "food_";
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-        
-        std::ostringstream os;
-        os << food_id_;
-        fileName += os.str();
-        
-#else
-        
-        fileName += std::to_string(food_id_);
-        
-#endif
+//#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+//        
+//        std::ostringstream os;
+//        os << food_id_;
+//        fileName += os.str();
+//        
+//#else
+//        
+//        fileName += std::to_string(food_id_);
+//        
+//#endif
+        fileName += custom_string::int_to_string(food_id_);
         fileName += ".png";
         FILE *fp = fopen(fileName.c_str(), "wb+");
         fwrite(buff, 1, buffData->size(), fp);
@@ -289,3 +290,14 @@ void ModFoodShow::OnDownloadComplete(cocos2d::network::HttpClient *sender, cocos
 //    
 //#endif
 //}
+
+
+
+//
+//  custom_string.h
+//  MobileFoodOrderClient
+//
+//  Created by ZhongHan on 4/24/15.
+//
+//
+
