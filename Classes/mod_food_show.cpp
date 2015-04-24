@@ -255,7 +255,20 @@ void ModFoodShow::OnDownloadComplete(cocos2d::network::HttpClient *sender, cocos
 
 
         
-        auto fileName = FileUtils::getInstance()->getWritablePath() +"food_" + std::to_string(food_id_) + ".png";
+        auto fileName = FileUtils::getInstance()->getWritablePath();
+        fileName += "food_";
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+        
+        std::ostringstream os;
+        os << food_id_;
+        fileName += os.str();
+        
+#else
+        
+        fileName += std::to_string(food_id_);
+        
+#endif
+        fileName += ".png";
         FILE *fp = fopen(fileName.c_str(), "wb+");
         fwrite(buff, 1, buffData->size(), fp);
         fclose(fp);
@@ -264,15 +277,15 @@ void ModFoodShow::OnDownloadComplete(cocos2d::network::HttpClient *sender, cocos
     }
 }
 
-template <typename T>
-std::string to_string(const T& t) {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-    std::ostringstream os;
-    os << t;
-    return os.str();
-#else
-    
-    return std::to_string(t);
-    
-#endif
-}
+//template <typename T>
+//std::string to_string_template(const T& t) {
+//#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+//    std::ostringstream os;
+//    os << t;
+//    return os.str();
+//#else
+//    
+//    return std::to_string(t);
+//    
+//#endif
+//}
