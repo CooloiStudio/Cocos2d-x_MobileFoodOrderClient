@@ -251,6 +251,10 @@ void ModFoodShow::OnDownloadComplete(cocos2d::network::HttpClient *sender, cocos
         std::vector<char> *buffData = response->getResponseData();
         char *buff = (char *)malloc(buffData->size());
         std::copy(buffData->begin(), buffData->end(), buff);
+        //        auto fileName = FileUtils::getInstance()->getWritablePath() +"food_" + std::to_string(food_id_) + ".png";
+
+
+        
         auto fileName = FileUtils::getInstance()->getWritablePath() +"food_" + std::to_string(food_id_) + ".png";
         FILE *fp = fopen(fileName.c_str(), "wb+");
         fwrite(buff, 1, buffData->size(), fp);
@@ -258,4 +262,17 @@ void ModFoodShow::OnDownloadComplete(cocos2d::network::HttpClient *sender, cocos
         
         is_network_done_ = 0;
     }
+}
+
+template <typename T>
+std::string to_string(const T& t) {
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
+    std::ostringstream os;
+    os << t;
+    return os.str();
+#else
+    
+    return std::to_string(t);
+    
+#endif
 }
