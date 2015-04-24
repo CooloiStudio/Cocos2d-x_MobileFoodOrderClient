@@ -14,7 +14,7 @@
 #include "mod_http.h"
 #include "mod_check.h"
 #include "cocos-ext.h"
-#include <cstring>
+
 
 #include "network/HttpClient.h"
 #include "mod_config_json.h"
