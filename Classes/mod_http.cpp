@@ -115,7 +115,7 @@ void ModHttp::LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::netwo
         }
         printf("\n");
     }
-    char test[64] = {};
+//    char test[64] = {};
     
 //    sprintf(test, response->getResponseDataString());
     

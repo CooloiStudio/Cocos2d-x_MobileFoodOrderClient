@@ -166,7 +166,7 @@ void ModFoodShow::LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::n
             log("%s",d1.GetParseError());
             return;
         }
-        log(d1["food"][1]["name"].GetString());
+        log("%s",d1["food"][1]["name"].GetString());
         log("%d",d1["food"].Size());
         assert(d1.IsObject());
         std::string test = "food";
