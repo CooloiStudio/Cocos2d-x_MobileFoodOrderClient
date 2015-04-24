@@ -9,6 +9,12 @@
 #include "mod_custom_info.h"
 #include "mod_custom.h"
 
+ModCustomInfo::ModCustomInfo():
+reget_(0)
+{
+    
+}
+
 bool ModCustomInfo::init()
 {
     auto layer_background = LayerColor::create(Color4B(240,240,255,255));
@@ -224,16 +230,20 @@ void ModCustomInfo::GetInfoCallback(cocos2d::network::HttpClient *sender, cocos2
 }
 void ModCustomInfo::GetInfo()
 {
-    log("GET");
+    log("Get Info");
+    auto path = FileUtils::getInstance()->getWritablePath() + "userinfo.json";
+    
+    auto user = FileUtils::getInstance()->getStringFromFile(path.c_str());
+    
     HttpRequest *request = new HttpRequest();
-    request->setRequestType(HttpRequest::Type::GET);
+    request->setRequestType(HttpRequest::Type::POST);
     request->setTag("POST test");
     
-    auto str = "http://" + ConfigJson::GetConfigIp() + ":" + ConfigJson::GetConfigPort() + "/clientuserinfo";
+    auto str = "http://" + ConfigJson::GetConfigIp() + ":" + ConfigJson::GetConfigPort() + "/clientuserinfo/";
     
     request->setUrl(str.c_str());
     //    std::string str = "username=123&password=123";
-    //    request->setRequestData(str.c_str(), str.size());
+        request->setRequestData(user.c_str(), user.size());
     
     
     

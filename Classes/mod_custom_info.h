@@ -37,9 +37,11 @@ private:
     
     int table_num_;
     
+    int reget_;
+    
 #pragma mark - Initialization
 public:
-    ModCustomInfo(){}
+    ModCustomInfo();
     ~ModCustomInfo(){}
     virtual bool init();
     static Scene* createScene();

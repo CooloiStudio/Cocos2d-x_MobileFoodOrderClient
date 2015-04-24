@@ -382,6 +382,17 @@ void ModMainMenu::UserLogIn()
     //    HttpClient::getInstance()->sendImmediate(request);
     HttpClient::getInstance()->send(request);
     request->release();
+    
+    
+    auto path = FileUtils::getInstance()->getWritablePath() + "userinfo.json";
+    log("new str is %s",buffer.GetString());
+    FILE* file = fopen(path.c_str(), "wb");
+    if(file)
+    {
+        fputs(buffer.GetString(), file);
+        fclose(file);
+    }
+
 }
 
 

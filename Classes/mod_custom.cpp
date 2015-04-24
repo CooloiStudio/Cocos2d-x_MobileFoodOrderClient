@@ -158,7 +158,7 @@ void ModCustom::InitTop()
     label_title->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
     
     
-    auto button_back = Button::create("back.png");
+    auto button_back = Button::create("set.png");
     auto scale = layer_top_->getContentSize().height/ button_back->getContentSize().height * 0.8;
     button_back->setScale(scale);
     log("size %f",button_back->getContentSize().width );
