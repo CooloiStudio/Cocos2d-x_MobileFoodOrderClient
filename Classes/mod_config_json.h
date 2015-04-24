@@ -18,11 +18,13 @@ private:
     
     static std::string config_ip_;
     static std::string config_port_;
+    static int boom_;
     
 public:
     
     static std::string GetConfigIp(){return config_ip_;}
     static std::string GetConfigPort(){return config_port_;}
+    static int GetBoomNum(){return boom_;}
     
 };
 

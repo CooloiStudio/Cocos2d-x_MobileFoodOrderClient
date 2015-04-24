@@ -194,11 +194,13 @@ void ModCustomInfo::GetInfoCallback(cocos2d::network::HttpClient *sender, cocos2
     sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
+    while (0 == ConfigJson::GetBoomNum()) {
     if (500 == statusCode)
     {
 //        UserLogOut();
         GetInfo();
         return;
+    }
     }
     
     if (response->isSucceed())
@@ -227,7 +229,7 @@ void ModCustomInfo::GetInfo()
     request->setRequestType(HttpRequest::Type::GET);
     request->setTag("POST test");
     
-    auto str = "http://" + ConfigJson::GetConfigIp() + ":" + ConfigJson::GetConfigPort() + "/clientuserinfo/";
+    auto str = "http://" + ConfigJson::GetConfigIp() + ":" + ConfigJson::GetConfigPort() + "/clientuserinfo";
     
     request->setUrl(str.c_str());
     //    std::string str = "username=123&password=123";
