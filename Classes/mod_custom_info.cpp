@@ -169,7 +169,15 @@ void ModCustomInfo::UserLogOut()
     request->setRequestType(HttpRequest::Type::GET);
     request->setTag("POST test");
     
-    auto str = "http://" + ConfigJson::GetConfigIp() + ":" + ConfigJson::GetConfigPort() + "/clientlogout/";
+    rapidjson::Document d;
+    auto jsonpath = FileUtils::getInstance()->getWritablePath() + "config.json";
+    auto jsonstr = FileUtils::getInstance()->getStringFromFile(jsonpath.c_str());
+    d.Parse<0>(jsonstr.c_str());
+    assert(d.IsObject());
+    std::string ip = d["ip"].GetString();
+    std::string port = d["port"].GetString();
+    
+    auto str = "http://" + ip + ":" + port + "/clientlogout/";
     
     request->setUrl(str.c_str());
 //    std::string str = "username=123&password=123";
@@ -200,13 +208,11 @@ void ModCustomInfo::GetInfoCallback(cocos2d::network::HttpClient *sender, cocos2
     sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
-    while (0 == ConfigJson::GetBoomNum()) {
-    if (500 == statusCode)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum())
     {
 //        UserLogOut();
         GetInfo();
         return;
-    }
     }
     
     if (response->isSucceed())
@@ -239,7 +245,15 @@ void ModCustomInfo::GetInfo()
     request->setRequestType(HttpRequest::Type::POST);
     request->setTag("POST test");
     
-    auto str = "http://" + ConfigJson::GetConfigIp() + ":" + ConfigJson::GetConfigPort() + "/clientuserinfo/";
+    rapidjson::Document d;
+    auto jsonpath = FileUtils::getInstance()->getWritablePath() + "config.json";
+    auto jsonstr = FileUtils::getInstance()->getStringFromFile(jsonpath.c_str());
+    d.Parse<0>(jsonstr.c_str());
+    assert(d.IsObject());
+    std::string ip = d["ip"].GetString();
+    std::string port = d["port"].GetString();
+    
+    auto str = "http://" + ip + ":" + port + "/clientuserinfo/";
     
     request->setUrl(str.c_str());
     //    std::string str = "username=123&password=123";

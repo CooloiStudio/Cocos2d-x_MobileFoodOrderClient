@@ -79,6 +79,9 @@ public:
     void UserLogIn();
     void LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     
+    void UserSignUp();
+    void SignUpCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
+    
 };
 
 #endif /* defined(__MobileFoodOrderClient__mod_main_menu__) */

@@ -107,7 +107,7 @@ void ModMainMenu::CreateEdit()
     if (233 != login_)
     {
         edit_pass_->setInputFlag(cocos2d::ui::EditBox::InputFlag::PASSWORD);
-        auto label_name = Label::createWithSystemFont("用户名:", "Airal", 30);
+        auto label_name = Label::createWithSystemFont("用户名:", "Airal", 24);
         label_name->setDimensions(edit_name_->getContentSize().width ,edit_name_->getContentSize().height  );
         label_name->setAnchorPoint(Vec2(0.5, 0.5));
         label_name->setAlignment(cocos2d::TextHAlignment::CENTER);
@@ -118,7 +118,7 @@ void ModMainMenu::CreateEdit()
         label_name->setTextColor(Color4B(240,240,255,255));
         addChild(label_name,1);
         
-        auto label_pass = Label::createWithSystemFont("密码:", "Airal", 30);
+        auto label_pass = Label::createWithSystemFont("密码:", "Airal", 24);
         label_pass->setDimensions(edit_name_->getContentSize().width,edit_name_->getContentSize().height );
         label_pass->setAnchorPoint(Vec2(0.5, 0.5));
         label_pass->setAlignment(cocos2d::TextHAlignment::CENTER);
@@ -132,17 +132,26 @@ void ModMainMenu::CreateEdit()
     else
     {
         
-        user_name_ =ConfigJson::GetConfigIp();
-        edit_name_->setPlaceHolder(user_name_.c_str());
-        edit_name_->setPlaceholderFontColor(Color3B(0,0,0));
-        edit_name_->setPlaceholderFontSize(10);
-        edit_name_->setFontSize(24);
-        user_password_ = ConfigJson::GetConfigPort();
+//        user_name_ =ConfigJson::GetConfigIp();
+//        edit_name_->setPlaceHolder(user_name_.c_str());
+//        edit_name_->setPlaceholderFontColor(Color3B(0,0,0));
+//        edit_name_->setPlaceholderFontSize(10);
+//        edit_name_->setFontSize(24);
+        rapidjson::Document d;
+        auto jsonpath = FileUtils::getInstance()->getWritablePath() + "config.json";
+        auto jsonstr = FileUtils::getInstance()->getStringFromFile(jsonpath.c_str());
+        d.Parse<0>(jsonstr.c_str());
+        assert(d.IsObject());
+        user_name_ = d["ip"].GetString();
+        std::string port = d["port"].GetString();
+        
         edit_pass_->setPlaceholderFontSize(10);
         edit_pass_->setPlaceholderFontColor(Color3B(0,0,0));
-        edit_pass_->setPlaceHolder(user_password_.c_str());
+        edit_pass_->setPlaceHolder(port.c_str());
+        edit_name_->setInputMode(cocos2d::ui::EditBox::InputMode::DECIMAL);
+        edit_pass_->setInputMode(cocos2d::ui::EditBox::InputMode::NUMERIC);
 
-        auto label_name = Label::createWithSystemFont("地址:", "Airal", 30);
+        auto label_name = Label::createWithSystemFont("地址:", "Airal", 24);
         label_name->setDimensions(edit_name_->getContentSize().width ,edit_name_->getContentSize().height  );
         label_name->setAnchorPoint(Vec2(0.5, 0.5));
         label_name->setAlignment(cocos2d::TextHAlignment::CENTER);
@@ -153,7 +162,7 @@ void ModMainMenu::CreateEdit()
         label_name->setTextColor(Color4B(240,240,255,255));
         addChild(label_name,1);
         
-        auto label_pass = Label::createWithSystemFont("端口:", "Airal", 30);
+        auto label_pass = Label::createWithSystemFont("端口:", "Airal", 24);
         label_pass->setDimensions(edit_name_->getContentSize().width,edit_name_->getContentSize().height );
         label_pass->setAnchorPoint(Vec2(0.5, 0.5));
         label_pass->setAlignment(cocos2d::TextHAlignment::CENTER);
@@ -170,15 +179,16 @@ void ModMainMenu::CreateEdit()
     if (login_ == -1)
     {
         
-        edit_id_ = EditBox::create(Size(size.width * 0.3,size.height * 0.06 ), "bt.png");
+        edit_id_ = EditBox::create(Size(size.width * 0.5,size.height * 0.1 ), "bt.png");
         edit_id_->setPosition(Vec2(origin.x + size.width / 2,origin.y + edit_name_->getPositionY() + edit_pass_->getContentSize().height * 1.5 ));
         edit_id_->setMaxLength(10);
         edit_id_->setFontColor(Color3B(0,0,0));
         //    edit_name_->setFontSize(24);
+        edit_id_->setInputMode(cocos2d::ui::EditBox::InputMode::NUMERIC);
         edit_id_->setDelegate(this);
         addChild(edit_id_,1);
         
-        auto label_id = Label::createWithSystemFont("学号:", "Airal", 30);
+        auto label_id = Label::createWithSystemFont("学号:", "Airal", 24);
         label_id->setDimensions(edit_name_->getContentSize().width,edit_name_->getContentSize().height );
         label_id->setAnchorPoint(Vec2(0.5, 0.5));
         label_id->setAlignment(cocos2d::TextHAlignment::LEFT);
@@ -212,6 +222,10 @@ void ModMainMenu::editBoxTextChanged(cocos2d::ui::EditBox *editBox, const std::s
     if (editBox == edit_pass_)
     {
         user_password_ = text;
+    }
+    if (editBox == edit_id_)
+    {
+        user_id_ = text;
     }
 }
 
@@ -277,17 +291,17 @@ void ModMainMenu::CreateButton()
         
         signup->setScale(scale);
         signup->setAnchorPoint(Vec2(0.5,0.5));
-        signup->setPosition(Vec2(origin.x + size.width * 4/10 ,
-                                origin.y + edit_pass_->getPositionY() - edit_pass_->getContentSize().height * 1.5));
-        signup->addTouchEventListener(CC_CALLBACK_2(ModMainMenu::ButtonLoginCallback, this));
+        signup->setPosition(Vec2(origin.x + size.width  /3,
+                                 origin.y + edit_pass_->getPositionY() - edit_pass_->getContentSize().height * 1.5));
+        signup->addTouchEventListener(CC_CALLBACK_2(ModMainMenu::ButtonCancelCallback, this));
         addChild(signup,1);
         
         
         cancel->setScale(scale);
         cancel->setAnchorPoint(Vec2(0.5,0.5));
-        cancel->setPosition(Vec2(origin.x + size.width * 6/10 ,
+        cancel->setPosition(Vec2(origin.x + size.width *2 / 3,
                                  origin.y + edit_pass_->getPositionY() - edit_pass_->getContentSize().height * 1.5));
-        cancel->addTouchEventListener(CC_CALLBACK_2(ModMainMenu::ButtonCancelCallback, this));
+        cancel->addTouchEventListener(CC_CALLBACK_2(ModMainMenu::ButtonLogoutCallback, this));
         addChild(cancel,1);
         
     }
@@ -296,8 +310,31 @@ void ModMainMenu::CreateButton()
 
 void ModMainMenu::ButtonUpdateCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
 {
-    ConfigJson::SetConfigIp(user_name_);
-    ConfigJson::SetConfigPort(user_password_);
+    switch (type) {
+        case cocos2d::ui::Widget::TouchEventType::ENDED:
+        {
+            rapidjson::Document d;
+            auto path = FileUtils::getInstance()->getWritablePath() + "config.json";
+            auto str = FileUtils::getInstance()->getStringFromFile(path.c_str());
+            d.Parse<0>(str.c_str());
+            d["ip"].SetString(user_name_.c_str());
+            d["port"].SetString(user_password_.c_str());
+            
+            rapidjson::StringBuffer buffer;
+            rapidjson::Writer<rapidjson::StringBuffer> write(buffer);
+            d.Accept(write);
+            FILE* file = fopen(path.c_str(), "wb");
+            if (file)
+            {
+                fputs(buffer.GetString(), file);
+                fclose(file);
+            }
+            
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 void ModMainMenu::ButtonLoginCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
@@ -306,7 +343,6 @@ void ModMainMenu::ButtonLoginCallback(cocos2d::Ref *pSender, Widget::TouchEventT
         case cocos2d::ui::Widget::TouchEventType::ENDED:
         {
             UserLogIn();
-            LogInfo::SetLogIn();
 //            log("login");
 //            auto* scene = ModCustom::createScene();
 //            auto etc = TransitionMoveInR::create(0.5, scene);
@@ -321,23 +357,50 @@ void ModMainMenu::ButtonLoginCallback(cocos2d::Ref *pSender, Widget::TouchEventT
 void ModMainMenu::ButtonCancelCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
 {
 //    Director::getInstance()->popScene();
-    http_->UserTest();
+    switch (type)
+    {
+        case cocos2d::ui::Widget::TouchEventType::ENDED:
+        {
+            UserSignUp();
+        }
+            break;
+        default:
+            break;
+    }
 }
+
+
 
 void ModMainMenu::ButtonSignupCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
 {
-    http_->UserLogOut();
-//    Director::getInstance()->pushScene(createScene(-1));
+    switch (type) {
+        case cocos2d::ui::Widget::TouchEventType::ENDED:
+        {
+            
+                Director::getInstance()->pushScene(createScene(-1));
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 
 void ModMainMenu::ButtonLogoutCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
 {
-    
+    switch (type) {
+        case cocos2d::ui::Widget::TouchEventType::ENDED:
+        {
+            
+            Director::getInstance()->replaceScene(ModCustom::createScene());
+        }
+            break;
+        default:
+            break;
+    }
 //    http_->UserTest();
 //    Director::getInstance()->popScene();
     
-    Director::getInstance()->replaceScene(ModCustom::createScene());
     
 //#if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
 //    MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
@@ -405,6 +468,7 @@ void ModMainMenu::LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::n
         log ("%s",d1["response"].GetString());
         if (test == d1["response"].GetString())
         {
+            LogInfo::SetLogIn();
             auto scene = ModCustomInfo::createScene();
             Director::getInstance()->replaceScene(scene);
         }
@@ -422,7 +486,16 @@ void ModMainMenu::UserLogIn()
     HttpRequest *request = new HttpRequest();
     request->setRequestType(HttpRequest::Type::POST);
     request->setTag("POST test");
-        auto str = "http://" + ConfigJson::GetConfigIp() + ":" + ConfigJson::GetConfigPort() + "/clientlogin/";
+    
+    rapidjson::Document d;
+    auto jsonpath = FileUtils::getInstance()->getWritablePath() + "config.json";
+    auto jsonstr = FileUtils::getInstance()->getStringFromFile(jsonpath.c_str());
+    d.Parse<0>(jsonstr.c_str());
+    assert(d.IsObject());
+    std::string ip = d["ip"].GetString();
+    std::string port = d["port"].GetString();
+    
+        auto str = "http://" + ip + ":" + port + "/clientlogin/";
     request->setUrl(str.c_str());
     
     
@@ -459,4 +532,119 @@ void ModMainMenu::UserLogIn()
 
 }
 
+void ModMainMenu::SignUpCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response)
+{
+    if (!response) {
+        return;
+    }
+    
+    if (!response->isSucceed()) {
+        CCLOG("error %s", response->getErrorBuffer());
+        return;
+    }
+    
+    //    response->getResponseDataString()
+    
+    int statusCode = response->getResponseCode();
+    char statusString[64] = {};
+    sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
+    //    _labelStatusCode->setString(statusString);
+    log("response code: %d", statusCode);
+    //    if (500 == statusCode)
+    //    {
+    //        UserLogIn();
+    //        return;
+    //    }
+    
+    if (response->isSucceed())
+    {
+        std::string str = "";
+        
+        std::vector<char>* v = response->getResponseData();
+        for (int i = 0; i < v->size(); i++)
+        {
+            //            printf("%c", v->at(i));
+            str = str + v->at(i);
+        }
+        log("%s",str.c_str());
+        printf("\n");
+        
+        rapidjson::Document d1;
+        d1.Parse<0>(str.c_str());
+        
+        if (d1.HasParseError())
+        {
+            log("%s",d1.GetParseError());
+            return;
+        }
+        
+        assert(d1.IsObject());
+        std::string test = "succeed";
+        log ("%s",d1["response"].GetString());
+        if (test == d1["response"].GetString())
+        {
+            LogInfo::SetLogIn();
+            auto scene = ModCustomInfo::createScene();
+            Director::getInstance()->replaceScene(scene);
+        }
+        
+        
+    }
+    
+}
+
+void ModMainMenu::UserSignUp()
+{
+    
+    log("POST");
+    HttpRequest *request = new HttpRequest();
+    request->setRequestType(HttpRequest::Type::POST);
+    request->setTag("POST test");
+    
+    rapidjson::Document d;
+    auto jsonpath = FileUtils::getInstance()->getWritablePath() + "config.json";
+    auto jsonstr = FileUtils::getInstance()->getStringFromFile(jsonpath.c_str());
+    d.Parse<0>(jsonstr.c_str());
+    assert(d.IsObject());
+    std::string ip = d["ip"].GetString();
+    std::string port = d["port"].GetString();
+    
+    auto str = "http://" + ip + ":" + port + "/clientregist/";
+    request->setUrl(str.c_str());
+    
+    
+    //    std::string str = "{\"username\":\"" + user_name_ + "\",\"password\":\"" + user_password_ + "\"}";
+    
+    rapidjson::Document d1;
+    rapidjson::Document::AllocatorType& allocator = d1.GetAllocator();
+    d1.SetObject();
+    
+    d1.AddMember("username", user_name_.c_str(), allocator);
+    d1.AddMember("password", user_password_.c_str(), allocator);
+    d1.AddMember("email", user_id_.c_str(), allocator);
+    
+    rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> write(buffer);
+    d1.Accept(write);
+    log("%s",buffer.GetString());
+    
+    request->setRequestData(buffer.GetString(), buffer.Size());
+    
+    request->setResponseCallback(CC_CALLBACK_2(ModMainMenu::SignUpCallback, this));
+    
+    HttpClient::getInstance()->send(request);
+    request->release();
+    
+    
+    auto path = FileUtils::getInstance()->getWritablePath() + "userinfo.json";
+    log("new str is %s",buffer.GetString());
+    FILE* file = fopen(path.c_str(), "wb");
+    if(file)
+    {
+        fputs(buffer.GetString(), file);
+        fclose(file);
+    }
+    
+    
+}
 

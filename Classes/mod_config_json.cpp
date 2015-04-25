@@ -8,6 +8,6 @@
 
 #include "mod_config_json.h"
 
-std::string ConfigJson::config_ip_("192.168.2.152");
-std::string ConfigJson::config_port_("8000");
-int ConfigJson::boom_(-1);
+//std::string ConfigJson::config_ip_("192.168.2.152");
+//std::string ConfigJson::config_port_("8000");
+int ConfigJson::boom_(0);

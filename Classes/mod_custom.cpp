@@ -22,7 +22,27 @@ Scene* ModCustom::createScene()
 }
 
 bool ModCustom::init()
-{
+{    auto path = FileUtils::getInstance()->getWritablePath() + "config.json";
+    if (false == FileUtils::getInstance()->isFileExist(path.c_str()))
+    {
+        rapidjson::Document d;
+        rapidjson::Document::AllocatorType& allocator = d.GetAllocator();
+        d.SetObject();
+        d.AddMember("ip", "192.168.2.152", allocator);
+        d.AddMember("port", "8000", allocator);
+        
+        //        auto path = FileUtils::getInstance()->getWritablePath() + "config.json";
+        rapidjson::StringBuffer buffer;
+        rapidjson::Writer<rapidjson::StringBuffer> write(buffer);
+        d.Accept(write);
+        log("%s",buffer.GetString());
+        FILE* file = fopen(path.c_str(), "wb");
+        if (file)
+        {
+            fputs(buffer.GetString(), file);
+            fclose(file);
+        }
+    }
     ModHttp::SetGoInting();
     ModHttp::SetGetSocksing();
     auto layer_background = LayerColor::create(Color4B(221,221,221,255));
@@ -33,6 +53,8 @@ bool ModCustom::init()
 
     return true;
 }
+
+
 
 void ModCustom::InitFood()
 {
@@ -74,7 +96,14 @@ void ModCustom::InitFood()
         foodjson.AddMember("name", d1["food"][i]["name"].GetString(), allocator);
         log("%s",d1["food"][i]["name"].GetString());
         
-        auto address = "http://" + ConfigJson::GetConfigIp() + ":" + ConfigJson::GetConfigPort() + d1["STATIC_URL"].GetString() + d1["food"][i]["img"].GetString();
+        rapidjson::Document d;
+        auto jsonpath = FileUtils::getInstance()->getWritablePath() + "config.json";
+        auto jsonstr = FileUtils::getInstance()->getStringFromFile(jsonpath.c_str());
+        d.Parse<0>(jsonstr.c_str());
+        assert(d.IsObject());
+        std::string ip = d["ip"].GetString();
+        std::string port = d["port"].GetString();
+        auto address = "http://" + ip + ":" + port + d1["STATIC_URL"].GetString() + d1["food"][i]["img"].GetString();
         foodjson.AddMember("img", address.c_str(), allocator);
         log("%s",foodjson["img"].GetString());
         
@@ -283,7 +312,12 @@ void ModCustom::ListCallback(cocos2d::network::HttpClient *sender, cocos2d::netw
         return;
     }
     
-    if (response->isSucceed())
+    if (404 == statusCode)
+    {
+        return;
+    }
+    
+    if (response->isSucceed() && 200 == statusCode)
     {
         food_list_ = "";
         std::vector<char>* v = response->getResponseData();
@@ -327,7 +361,15 @@ void ModCustom::GetList()
     request->setRequestType(HttpRequest::Type::GET);
     request->setTag("POST test");
     
-    auto str = "http://" + ConfigJson::GetConfigIp() + ":" + ConfigJson::GetConfigPort() + "/clientfood/?choose=0";
+    rapidjson::Document d;
+    auto jsonpath = FileUtils::getInstance()->getWritablePath() + "config.json";
+    auto jsonstr = FileUtils::getInstance()->getStringFromFile(jsonpath.c_str());
+    d.Parse<0>(jsonstr.c_str());
+    assert(d.IsObject());
+    std::string ip = d["ip"].GetString();
+    std::string port = d["port"].GetString();
+    
+    auto str = "http://" + ip + ":" + port + "/clientfood/?choose=0";
     request->setUrl(str.c_str());   
     
     request->setResponseCallback(CC_CALLBACK_2(ModCustom::ListCallback, this));

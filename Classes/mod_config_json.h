@@ -16,18 +16,18 @@ class ConfigJson
 {
 private:
     
-    static std::string config_ip_;
-    static std::string config_port_;
+//    static std::string config_ip_;
+//    static std::string config_port_;
     static int boom_;
     
 public:
     
-    static std::string GetConfigIp(){return config_ip_;}
-    static std::string GetConfigPort(){return config_port_;}
+//    static std::string GetConfigIp(){return config_ip_;}
+//    static std::string GetConfigPort(){return config_port_;}
     static int GetBoomNum(){return boom_;}
     
-    static void SetConfigIp(std::string ip){config_ip_ = ip;}
-    static void SetConfigPort(std::string port){config_port_ = port;}
+//    static void SetConfigIp(std::string ip){config_ip_ = ip;}
+//    static void SetConfigPort(std::string port){config_port_ = port;}
     
 };
 
