@@ -12,12 +12,15 @@ ModFoodShow::ModFoodShow(std::string str):
 food_id_(-1),
 is_network_done_(-1)
 {
+    str_ = str;
     rapidjson::Document d1;
     d1.Parse<0>(str.c_str());
+    food_id_ = d1["id"].GetInt();
     canteen_ = d1["canteen"].GetString();
     name_ = d1["name"].GetString();
     img_ad_ = d1["img"].GetString();
     description_ = d1["description"].GetString();
+    price_ = d1["price"].GetString();
 }
 
 ModFoodShow::~ModFoodShow()
@@ -43,10 +46,9 @@ bool ModFoodShow::init()
     return true;
 }
 
-ModFoodShow* ModFoodShow::Create(int id, std::string info)
+ModFoodShow* ModFoodShow::Create(std::string info)
 {
     auto* ret = new ModFoodShow(info);
-    ret->SetFoodId(id);
     if (ret && ret->init())
     {
         ret->autorelease();
@@ -76,6 +78,7 @@ int ModFoodShow::InitFoodShow()
     auto scale = this->getContentSize().width / (200 * 4);
     
     auto path = FileUtils::getInstance()->getWritablePath() + "food_" + custom_string::int_to_string(food_id_) + ".png";
+    img_name_ = path;
     img_ = Sprite::create(path);
     img_->setScale(this->getContentSize().height * 0.9 / img_->getContentSize().height );
     img_->setAnchorPoint(Vec2(0,0));
@@ -84,13 +87,37 @@ int ModFoodShow::InitFoodShow()
     addChild(img_,3);
     
     auto name = Label::createWithSystemFont(name_.c_str(), "Arial", 24);
-    name->setContentSize(Size(this->getContentSize().width * 2 / 3,
-                              this->getContentSize().height * 1 / 4));
+    name->setDimensions(this->getContentSize().width / 4,
+                              this->getContentSize().height * 1 / 4);
     name->setAnchorPoint(Vec2(0,0));
     name->setTextColor(Color4B(0,0,0,255));
-    name->setPosition(Vec2(this->getContentSize().width * 2 / 5,
+    name->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+    name->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+    name->setPosition(Vec2(this->getContentSize().width / 3,
                            this->getContentSize().height * 3 / 4));
     addChild(name,3);
+    
+    auto label_price = Label::createWithSystemFont("单价：", "Arial", 24);
+    label_price->setDimensions(this->getContentSize().width / 4,
+                              this->getContentSize().height * 1 / 4);
+    label_price->setAnchorPoint(Vec2(0,0));
+    label_price->setTextColor(Color4B(0,0,0,255));
+    label_price->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+    label_price->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+    label_price->setPosition(Vec2(name->getPositionX(),
+                                  name->getPositionY() - label_price->getContentSize().height));
+    addChild(label_price,3);
+    
+    auto price = Label::createWithSystemFont(price_.c_str(), "Arial", 28);
+    price->setDimensions(this->getContentSize().width / 4,
+                               this->getContentSize().height * 1 / 4);
+    price->setAnchorPoint(Vec2(0,0));
+    price->setTextColor(Color4B(242, 39, 0 ,255));
+    price->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+    price->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+    price->setPosition(Vec2(name->getPositionX() + price->getContentSize().width,
+                                  name->getPositionY() - label_price->getContentSize().height));
+    addChild(price,3);
     
     auto button_shop = Button::create("shop_button.png");
     button_shop->setScale(this->getContentSize().width / (button_shop->getContentSize().width * 4));
@@ -107,18 +134,34 @@ int ModFoodShow::InitFoodShow()
     button_info->setAnchorPoint(Vec2(0,0));
     button_info->setPosition(Vec2(button_shop->getPositionX() + button_shop->getContentSize().width * 1.1 * scale,
                                   button_shop->getPositionY()));
+    button_info->addTouchEventListener(CC_CALLBACK_2(ModFoodShow::ButtonInfoCallback, this));
     addChild(button_info,3);
+    
+    
+    
     log("food show over");
     
     
     return 0;
 }
 
+void ModFoodShow::ButtonInfoCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
+{
+    switch (type) {
+        case cocos2d::ui::Widget::TouchEventType::ENDED:
+            Director::getInstance()->pushScene(ModFoodInfo::CreateScene(str_));
+            break;
+            
+        default:
+            break;
+    }
+}
+
 void ModFoodShow::ButtonShopCallback(cocos2d::Ref *pSender, Widget::TouchEventType type)
 {
     switch (type) {
         case cocos2d::ui::Widget::TouchEventType::ENDED:
-            GetList();
+//            GetList();
             break;
             
         default:
@@ -265,17 +308,6 @@ void ModFoodShow::OnDownloadComplete(cocos2d::network::HttpClient *sender, cocos
         
         auto fileName = FileUtils::getInstance()->getWritablePath();
         fileName += "food_";
-//#if (CC_TARGET_PLATFORM == CC_PLATFORM_ANDROID)
-//        
-//        std::ostringstream os;
-//        os << food_id_;
-//        fileName += os.str();
-//        
-//#else
-//        
-//        fileName += std::to_string(food_id_);
-//        
-//#endif
         fileName += custom_string::int_to_string(food_id_);
         fileName += ".png";
         FILE *fp = fopen(fileName.c_str(), "wb+");

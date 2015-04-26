@@ -46,10 +46,10 @@ bool ModCustom::init()
     ModHttp::SetGoInting();
     ModHttp::SetGetSocksing();
     auto layer_background = LayerColor::create(Color4B(221,221,221,255));
+    addChild(layer_background, 0);
     InitTop();
 //    InitFood();
     GetList();
-    addChild(layer_background, 0);
 
     return true;
 }
@@ -90,6 +90,8 @@ void ModCustom::InitFood()
         rapidjson::Document foodjson;
         foodjson.SetObject();
         rapidjson::Document::AllocatorType& allocator = foodjson.GetAllocator();
+        foodjson.AddMember("id", d1["food"][i]["id"].GetInt(), allocator);
+        foodjson.AddMember("price", d1["food"][i]["price"].GetString(), allocator);
         foodjson.AddMember("canteen", d1["food"][i]["canteen"].GetString(), allocator);
         log("%s",d1["food"][i]["canteen"].GetString());
         
@@ -104,6 +106,8 @@ void ModCustom::InitFood()
         std::string ip = d["ip"].GetString();
         std::string port = d["port"].GetString();
         auto address = "http://" + ip + ":" + port + d1["STATIC_URL"].GetString() + d1["food"][i]["img"].GetString();
+        
+        
         foodjson.AddMember("img", address.c_str(), allocator);
         log("%s",foodjson["img"].GetString());
         
@@ -118,7 +122,7 @@ void ModCustom::InitFood()
         
         
         
-        auto* food = ModFoodShow::Create(i,buffer.GetString());
+        auto* food = ModFoodShow::Create(buffer.GetString());
         
         log("add first food");
         food->setPosition(-origin.x,origin.y);

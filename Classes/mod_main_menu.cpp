@@ -106,7 +106,8 @@ void ModMainMenu::CreateEdit()
     
     if (233 != login_)
     {
-        edit_pass_->setInputFlag(cocos2d::ui::EditBox::InputFlag::PASSWORD);
+        if (0 == login_);
+            edit_pass_->setInputFlag(cocos2d::ui::EditBox::InputFlag::PASSWORD);
         auto label_name = Label::createWithSystemFont("用户名:", "Airal", 24);
         label_name->setDimensions(edit_name_->getContentSize().width ,edit_name_->getContentSize().height  );
         label_name->setAnchorPoint(Vec2(0.5, 0.5));

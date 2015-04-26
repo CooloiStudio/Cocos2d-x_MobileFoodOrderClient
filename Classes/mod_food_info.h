@@ -12,21 +12,59 @@
 #include "iostream"
 #include "cocos2d.h"
 
-USING_NS_CC;
+#include "json/document.h"
+#include "json/rapidjson.h"
+#include "json/writer.h"
+#include "json/stringbuffer.h"
 
-class ModFoodInfo : public Scene
+#include "mod_custom_info.h"
+
+#include "cocos-ext.h"
+#include "custom_string.h"
+
+USING_NS_CC;
+using namespace  ui;
+using namespace extension;
+
+class ModFoodInfo : public Scene,public EditBoxDelegate
 {
 private:
-    
     int food_id_;
+    std::string canteen_;
+    std::string name_;
+    std::string img_ad_;
+    std::string description_;
+    std::string price_;
     
+    LayerColor* layer_top_;
+    LayerColor* layer_bottom_;
+    
+    std::string num_;
     
 public:
-    ModFoodInfo(int food_id);
+    ModFoodInfo(std::string food);
     ~ModFoodInfo();
     bool init();
-    static ModFoodInfo* CreateScene(int food_id);
+    static ModFoodInfo* CreateScene(std::string food_str);
 
+public:
+    
+    void InitTop();
+    void InitBottom();
+    void InitFood();
+
+    
+    void ButtonBackCallback(Ref *psender, Widget::TouchEventType type);
+    void ButtonInfoCallback(Ref *psender, Widget::TouchEventType type);
+    void ButtonShopCallback(Ref *psender, Widget::TouchEventType type);
+    
+    
+    
+    virtual void editBoxEditingDigBegin(EditBox* editbox);
+    virtual void editBoxEditingDidEnd(EditBox* editbox);
+    virtual void editBoxTextChanged (EditBox *editBox, const std::string &text);
+    virtual void editBoxReturn (EditBox *editBox);
+    
 };
 
 

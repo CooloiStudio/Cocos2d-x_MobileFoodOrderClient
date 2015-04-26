@@ -72,6 +72,10 @@
 		9043F2F51AC68B9F009C245B /* mod_food_show.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9043F2F21AC68B9F009C245B /* mod_food_show.cpp */; };
 		9043F2F81AC692FA009C245B /* mod_check.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9043F2F61AC692FA009C245B /* mod_check.cpp */; };
 		9043F2F91AC692FA009C245B /* mod_check.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9043F2F61AC692FA009C245B /* mod_check.cpp */; };
+		906BF9341AED031A00032329 /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 906BF9331AED031A00032329 /* edit.png */; };
+		906BF9351AED031A00032329 /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 906BF9331AED031A00032329 /* edit.png */; };
+		906BF93D1AED10DF00032329 /* foodshop.png in Resources */ = {isa = PBXBuildFile; fileRef = 906BF93C1AED10DF00032329 /* foodshop.png */; };
+		906BF93E1AED10DF00032329 /* foodshop.png in Resources */ = {isa = PBXBuildFile; fileRef = 906BF93C1AED10DF00032329 /* foodshop.png */; };
 		9074F90C1ABD58E1009E8E7F /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 9074F90A1ABD58E1009E8E7F /* bg.png */; };
 		9074F90D1ABD58E1009E8E7F /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 9074F90A1ABD58E1009E8E7F /* bg.png */; };
 		9074F90E1ABD58E1009E8E7F /* signbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 9074F90B1ABD58E1009E8E7F /* signbg.png */; };
@@ -182,6 +186,8 @@
 		9043F2F31AC68B9F009C245B /* mod_food_show.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_food_show.h; sourceTree = "<group>"; };
 		9043F2F61AC692FA009C245B /* mod_check.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mod_check.cpp; sourceTree = "<group>"; };
 		9043F2F71AC692FA009C245B /* mod_check.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_check.h; sourceTree = "<group>"; };
+		906BF9331AED031A00032329 /* edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit.png; sourceTree = "<group>"; };
+		906BF93C1AED10DF00032329 /* foodshop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = foodshop.png; sourceTree = "<group>"; };
 		9074F90A1ABD58E1009E8E7F /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
 		9074F90B1ABD58E1009E8E7F /* signbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = signbg.png; sourceTree = "<group>"; };
 		9074F9151ABD72CB009E8E7F /* Info.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Info.cpp; sourceTree = "<group>"; };
@@ -331,6 +337,8 @@
 		46880B7519C43A67006E1F66 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				906BF93C1AED10DF00032329 /* foodshop.png */,
+				906BF9331AED031A00032329 /* edit.png */,
 				901641D11AEA8981000FE9A9 /* cancel.png */,
 				901641D21AEA8981000FE9A9 /* changed.png */,
 				901641CD1AEA68B6000FE9A9 /* set.png */,
@@ -537,6 +545,7 @@
 				9074F91D1ABD743C009E8E7F /* shop.png in Resources */,
 				900C99C51AE91DD800E5D66F /* shop_button.png in Resources */,
 				901641D31AEA8981000FE9A9 /* cancel.png in Resources */,
+				906BF93D1AED10DF00032329 /* foodshop.png in Resources */,
 				5087E78317EB970100C73F5D /* Icon-152.png in Resources */,
 				90F9265E1ABC65C3003820A5 /* aalv.png in Resources */,
 				5087E77D17EB970100C73F5D /* Default-568h@2x.png in Resources */,
@@ -549,6 +558,7 @@
 				5087E78217EB970100C73F5D /* Icon-144.png in Resources */,
 				50EF629817ECD46A001EB2F8 /* Icon-80.png in Resources */,
 				900C99C31AE91DD800E5D66F /* info_button.png in Resources */,
+				906BF9341AED031A00032329 /* edit.png in Resources */,
 				5087E78417EB970100C73F5D /* Icon-57.png in Resources */,
 				9074F90E1ABD58E1009E8E7F /* signbg.png in Resources */,
 				5087E77E17EB970100C73F5D /* Default.png in Resources */,
@@ -580,12 +590,14 @@
 				901641D61AEA8981000FE9A9 /* changed.png in Resources */,
 				90F926561ABC5A77003820A5 /* bt.png in Resources */,
 				90FBC1381AD7FADD003E64C6 /* food.png in Resources */,
+				906BF9351AED031A00032329 /* edit.png in Resources */,
 				900C99BE1AE9136A00E5D66F /* login.png in Resources */,
 				90B1C6901AB5AE9E000DB4E7 /* Confirm.png in Resources */,
 				90F9265F1ABC65C3003820A5 /* aalv.png in Resources */,
 				3F0F4FE7BFD23C718A7344DE /* res in Resources */,
 				901641CF1AEA68B6000FE9A9 /* set.png in Resources */,
 				900C99C01AE9136A00E5D66F /* signup.png in Resources */,
+				906BF93E1AED10DF00032329 /* foodshop.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
