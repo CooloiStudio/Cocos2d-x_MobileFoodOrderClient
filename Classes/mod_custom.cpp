@@ -229,7 +229,7 @@ void ModCustom::ButtonInfoCallback(cocos2d::Ref *pSender, Widget::TouchEventType
 {
     if (LogInfo::GetLogIn() == 0)
     {
-        Director::getInstance()->replaceScene(ModCustomInfo::createScene());
+        Director::getInstance()->replaceScene(ModCustomInfo::createScene(0));
     }
     else
     {

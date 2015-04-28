@@ -20,11 +20,12 @@
 #include "json/rapidjson.h"
 #include "json/writer.h"
 #include "json/stringbuffer.h"
+#include "network/HttpClient.h"
 
 USING_NS_CC;
 using namespace ui;
 
-class ModCustomInfo : public Layer,
+class ModCustomInfo : public Scene,
 public extension::TableViewDataSource,
 public extension::TableViewDelegate
 {
@@ -39,13 +40,15 @@ private:
     
     int reget_;
     
+    int scene_info_;
+    
 #pragma mark - Initialization
 public:
-    ModCustomInfo();
+    ModCustomInfo(int info);
     ~ModCustomInfo(){}
-    virtual bool init();
-    static Scene* createScene();
-    CREATE_FUNC(ModCustomInfo);
+    bool init();
+    static Scene* createScene(int scene_info);
+//    CREATE_FUNC(ModCustomInfo);
     
 public:
     
@@ -61,6 +64,7 @@ public:
     void GetInfo();
     void GetInfoCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     
+    void SetSceneInfo(int scene_info);
     
 #pragma mark - TableView
     
@@ -72,6 +76,16 @@ public:
     virtual void tableCellTouched(extension::TableView* table,
                                   extension::TableViewCell* cell);
     virtual void scrollViewDidScroll(extension::ScrollView *view);
+    
+    
+    void GetClientorder();
+    void ClientorderCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
+    void InitOrder();
+    
+    void CreateFoodOrder();
+    
+    void GetClientInfo();
+    void ClientInfoCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     
 };
 

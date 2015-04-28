@@ -441,6 +441,11 @@ void ModMainMenu::LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::n
 //        UserLogIn();
 //        return;
 //    }
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum())
+    {
+        //        GetClientorder();
+        UserLogIn();
+    }
     
     if (response->isSucceed())
     {
@@ -470,7 +475,7 @@ void ModMainMenu::LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::n
         if (test == d1["response"].GetString())
         {
             LogInfo::SetLogIn();
-            auto scene = ModCustomInfo::createScene();
+            auto scene = ModCustomInfo::createScene(0);
             Director::getInstance()->replaceScene(scene);
         }
         
@@ -557,6 +562,13 @@ void ModMainMenu::SignUpCallback(cocos2d::network::HttpClient *sender, cocos2d::
     //        return;
     //    }
     
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum())
+    {
+        //        GetClientorder();
+//        UserLogIn();
+        UserSignUp();
+    }
+    
     if (response->isSucceed())
     {
         std::string str = "";
@@ -585,7 +597,7 @@ void ModMainMenu::SignUpCallback(cocos2d::network::HttpClient *sender, cocos2d::
         if (test == d1["response"].GetString())
         {
             LogInfo::SetLogIn();
-            auto scene = ModCustomInfo::createScene();
+            auto scene = ModCustomInfo::createScene(0);
             Director::getInstance()->replaceScene(scene);
         }
         
