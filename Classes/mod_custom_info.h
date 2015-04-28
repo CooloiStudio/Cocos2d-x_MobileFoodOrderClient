@@ -24,17 +24,22 @@
 
 USING_NS_CC;
 using namespace ui;
+using namespace extension;
 
 class ModCustomInfo : public Scene,
 public extension::TableViewDataSource,
-public extension::TableViewDelegate
+public extension::TableViewDelegate,
+public EditBoxDelegate
 {
 private:
     LayerColor* layer_top_;
+    LayerColor* layer_bottom_;
     
     extension::TableView* menu_;
     
     std::string get_into_;
+    
+    std::string address_;
     
     int table_num_;
     
@@ -57,6 +62,16 @@ public:
     void ButtonShopCallback(Ref* pSender, Widget::TouchEventType type);
     
     void InitMenu();
+    
+    void InitBottom();
+    virtual void editBoxEditingDigBegin(EditBox* editbox);
+    virtual void editBoxEditingDidEnd(EditBox* editbox);
+    virtual void editBoxTextChanged (EditBox *editBox, const std::string &text);
+    virtual void editBoxReturn (EditBox *editBox);
+    void BottomShopCallback(Ref *psender, Widget::TouchEventType type);
+    void SubmitShop();
+    void SubmitShopCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
+    
 
     void UserLogOut();
     void LogOutCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);

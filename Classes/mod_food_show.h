@@ -13,6 +13,8 @@
 #include "cocos2d.h"
 #include "mod_http.h"
 #include "mod_check.h"
+#include "mod_custom_info.h"
+#include "Info.h"
 #include "cocos-ext.h"
 
 
@@ -86,7 +88,8 @@ public:
     int DownloadPicture();
     void OnDownloadComplete(HttpClient *sender, HttpResponse *response);
     
-    
+    void BuySomething();
+    void BuyCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
 };
 
 #endif /* defined(__MobileFoodOrderClient__mod_food_show__) */

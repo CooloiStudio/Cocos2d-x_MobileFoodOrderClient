@@ -26,7 +26,7 @@ USING_NS_CC;
 using namespace  ui;
 using namespace extension;
 
-class ModFoodInfo : public Scene,public EditBoxDelegate
+class ModFoodInfo : public Scene
 {
 private:
     int food_id_;

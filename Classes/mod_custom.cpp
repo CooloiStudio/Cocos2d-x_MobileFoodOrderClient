@@ -346,7 +346,7 @@ void ModCustom::ListCallback(cocos2d::network::HttpClient *sender, cocos2d::netw
 //        log ("%s",d1["response"].GetString());
 //        if (test == d1["response"].GetString())
 //        {
-//            //            auto scene = ModCustomInfo::createScene();
+//            //            auto scene = x();
 //            //            Director::getInstance()->replaceScene(scene);
 //        }
         InitFood();

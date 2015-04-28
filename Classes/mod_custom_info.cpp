@@ -249,7 +249,7 @@ void ModCustomInfo::GetInfoCallback(cocos2d::network::HttpClient *sender, cocos2
         log("%s",get_into_.c_str());
         printf("\n");
         
-        CreateTableView();
+        Director::getInstance()->replaceScene(ModCustomInfo::createScene(-1));
     }
     
     
@@ -318,6 +318,188 @@ void ModCustomInfo::InitMenu()
     //            fputs(buffer.GetString(), file);
     //            fclose(file);
     //        }
+}
+
+void ModCustomInfo::InitBottom()
+{
+    auto origin = Director::getInstance()->getVisibleOrigin();
+    auto size = Director::getInstance()->getVisibleSize();
+    layer_bottom_ = LayerColor::create(Color4B(249, 249, 249, 255));
+    layer_bottom_->setContentSize(Size(size.width,size.height / 15));
+    layer_bottom_->setPosition(Vec2(origin.x ,origin.y));
+    layer_bottom_->setCascadeColorEnabled(true);
+    
+        auto label = Label::createWithSystemFont(" 收货地址： ", "Arial", 24);
+        label->setContentSize(Size(layer_bottom_->getContentSize().width / 5, size.height / 15));
+        label->setDimensions(layer_bottom_->getContentSize().width / 5, layer_bottom_->getContentSize().height);
+        label->setAnchorPoint(Vec2(0,0));
+        label->setPosition(Vec2(0,0));
+        label->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+        label->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+        label->setTextColor(Color4B(0,0,0,255));
+    
+        layer_bottom_->addChild(label);
+    
+    
+        auto edit = EditBox::create(Size(layer_bottom_->getContentSize().width / 4,layer_bottom_->getContentSize().height - 4), "edit.png");
+        edit->setAnchorPoint(Vec2(0,0));
+        edit->setPosition(Vec2(label->getPosition().x + label->getContentSize().width,2));
+        edit->setMaxLength(16);
+        edit->setFontColor(Color3B(0,0,0));
+//        edit->setInputMode(cocos2d::ui::EditBox::InputMode::NUMERIC);
+        //    edit_name_->setFontSize(24);
+        edit->setDelegate(this);
+        layer_bottom_->addChild(edit,1);
+    
+    auto shop = Button::create("foodshop.png");
+    auto scale = layer_bottom_->getContentSize().height / shop->getContentSize().height;
+    shop->setScale(scale);
+    shop->setAnchorPoint(Vec2(0,0));
+    shop->addTouchEventListener(CC_CALLBACK_2(ModCustomInfo::BottomShopCallback, this));
+    shop->setPosition(Vec2(layer_bottom_->getContentSize().width - shop->getContentSize().width * scale, 0));
+    
+    auto labelshop = Label::createWithSystemFont("确认订单", "Arial", 24);
+    labelshop->setTextColor(Color4B(255,255,255,255));
+    labelshop->setDimensions(shop->getContentSize().width * scale, layer_bottom_->getContentSize().height);
+    labelshop->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+    labelshop->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+    labelshop->setAnchorPoint(Vec2(0,0));
+    labelshop->setPosition(shop->getPosition());
+    
+    layer_bottom_->addChild(shop);
+    layer_bottom_->addChild(labelshop,2);
+    
+    addChild(layer_bottom_);
+}
+
+void ModCustomInfo::BottomShopCallback(cocos2d::Ref *psender, Widget::TouchEventType type)
+{
+    SubmitShop();
+}
+
+void ModCustomInfo::SubmitShop()
+{
+    log("Get Info");
+    auto path = FileUtils::getInstance()->getWritablePath() + "userinfo.json";
+    
+    auto user = FileUtils::getInstance()->getStringFromFile(path.c_str());
+    rapidjson::Document d1;
+    rapidjson::Document::AllocatorType& allocator = d1.GetAllocator();
+    d1.Parse<0>(user.c_str());
+    d1.AddMember("address", address_.c_str(), allocator);
+
+    rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> write(buffer);
+    d1.Accept(write);
+    
+    
+    
+    HttpRequest *request = new HttpRequest();
+    request->setRequestType(HttpRequest::Type::POST);
+    request->setTag("POST test");
+    
+    rapidjson::Document d;
+    auto jsonpath = FileUtils::getInstance()->getWritablePath() + "config.json";
+    auto jsonstr = FileUtils::getInstance()->getStringFromFile(jsonpath.c_str());
+    d.Parse<0>(jsonstr.c_str());
+    assert(d.IsObject());
+    std::string ip = d["ip"].GetString();
+    std::string port = d["port"].GetString();
+    
+    auto str = "http://" + ip + ":" + port + "/clientuserinfo/";
+    
+    request->setUrl(str.c_str());
+    //    std::string str = "username=123&password=123";
+    request->setRequestData(buffer.GetString(), buffer.Size());
+    
+    
+    
+    request->setResponseCallback(CC_CALLBACK_2(ModCustomInfo::GetInfoCallback, this));
+    HttpClient::getInstance()->send(request);
+    request->release();
+}
+
+void ModCustomInfo::SubmitShopCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response)
+{
+    if (!response) {
+        return;
+    }
+    
+    if (!response->isSucceed()) {
+        CCLOG("error %s", response->getErrorBuffer());
+        return;
+    }
+    
+    //    response->getResponseDataString()
+    
+    int statusCode = response->getResponseCode();
+    char statusString[64] = {};
+    sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
+    //    _labelStatusCode->setString(statusString);
+    log("response code: %d", statusCode);
+    //    if (500 == statusCode)
+    //    {
+    //        UserLogIn();
+    //        return;
+    //    }
+    
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum())
+    {
+        SubmitShop();
+    }
+    
+    if (response->isSucceed())
+    {
+        get_into_ = "";
+        
+        std::vector<char>* v = response->getResponseData();
+        for (int i = 0; i < v->size(); i++)
+        {
+            //            printf("%c", v->at(i));
+            get_into_ = get_into_ + v->at(i);
+        }
+        log("%s",get_into_.c_str());
+        printf("\n");
+        
+        rapidjson::Document d1;
+        d1.Parse<0>(get_into_.c_str());
+        
+        if (d1.HasParseError())
+        {
+            log("%s",d1.GetParseError());
+            return;
+        }
+        
+        assert(d1.IsObject());
+        std::string test = "succeed";
+        log ("%s",d1["response"].GetString());
+        
+//        CreateFoodOrder();
+//        CreateTableView();
+        
+        
+    }
+
+}
+
+void ModCustomInfo::editBoxTextChanged(cocos2d::ui::EditBox *editBox, const std::string &text)
+{
+    address_ = text;
+}
+
+void ModCustomInfo::editBoxEditingDigBegin(cocos2d::ui::EditBox *editBox)
+{
+    
+}
+
+void ModCustomInfo::editBoxReturn(cocos2d::ui::EditBox *editBox)
+{
+    
+}
+
+void ModCustomInfo::editBoxEditingDidEnd(cocos2d::ui::EditBox *editbox)
+{
+    
 }
 
 void ModCustomInfo::CreateFoodOrder()
@@ -535,8 +717,8 @@ ssize_t ModCustomInfo::numberOfCellsInTableView(extension::TableView *table)
     
     if (0 < scene_info_)
     {
-//        return d1["food"].Size();
-        return 0;
+        return d1["food"].Size();
+//        return 0;
     }
     
     return 3;
@@ -567,6 +749,95 @@ extension::TableViewCell* ModCustomInfo::tableCellAtIndex(extension::TableView *
     bg_sprite->setTextureRect(Rect(0, 0, size.width, size.height / 6 - 2));
     bg_sprite->setColor(bg_color);
     cell->addChild(bg_sprite);
+    
+    if (0 < scene_info_)
+    {
+        
+        auto path = FileUtils::getInstance()->getWritablePath() + "food_" + custom_string::int_to_string(d1["food"][idx]["id"].GetInt()) + ".png";
+
+        auto img_ = Sprite::create(path.c_str());
+        img_->setScale(size.height / 6 * 0.9 / img_->getContentSize().height );
+        img_->setAnchorPoint(Vec2(0,0));
+        img_->setPosition(Vec2(this->getContentSize().height * 0.05,
+                               this->getContentSize().height * 0.05));
+        cell->addChild(img_);
+        
+        auto name = Label::createWithSystemFont(d1["food"][idx]["name"].GetString(), "Arial", 24);
+        name->setDimensions(this->getContentSize().width / 4,
+                            size.height / 6);
+        name->setAnchorPoint(Vec2(0,0));
+        name->setTextColor(Color4B(0,0,0,255));
+        name->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+        name->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+        name->setPosition(Vec2(size.width / 3,
+                               (size.height / 6 - 2 ) / 6 * 2));
+        cell->addChild(name,3);
+        
+        auto label_price = Label::createWithSystemFont("单价：", "Arial", 24);
+        label_price->setDimensions(this->getContentSize().width / 4,
+                               size.height / 6);
+        label_price->setAnchorPoint(Vec2(0,0));
+        label_price->setTextColor(Color4B(0, 0, 0,255));
+        label_price->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+        label_price->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+        label_price->setPosition(Vec2(size.width / 3 , 0));
+        cell->addChild(label_price,3);
+        
+        auto price = Label::createWithSystemFont(d1["food"][idx]["price"].GetString(), "Arial", 24);
+        price->setDimensions(this->getContentSize().width / 4,
+                            size.height / 6);
+        price->setAnchorPoint(Vec2(0,0));
+        price->setTextColor(Color4B(242, 39, 0,255));
+        price->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+        price->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+        price->setPosition(Vec2(size.width / 3 * 2, 0));
+        cell->addChild(price,3);
+        
+        auto label_centeen = Label::createWithSystemFont("派送单位：", "Arial", 24);
+        label_centeen->setDimensions(this->getContentSize().width / 4,
+                                   size.height / 6);
+        label_centeen->setAnchorPoint(Vec2(0,0));
+        label_centeen->setTextColor(Color4B(0, 0, 0,255));
+        label_centeen->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+        label_centeen->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+        label_centeen->setPosition(Vec2(size.width / 3 , -(size.height / 6 - 2 ) / 6 * 2));
+        cell->addChild(label_centeen,3);
+        
+        auto centeen = Label::createWithSystemFont(d1["food"][idx]["canteen"].GetString(), "Arial", 24);
+        centeen->setDimensions(this->getContentSize().width / 4,
+                             size.height / 6);
+        centeen->setAnchorPoint(Vec2(0,0));
+        centeen->setTextColor(Color4B(0, 0, 0,255));
+        centeen->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+        centeen->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+        centeen->setPosition(Vec2(size.width / 3 * 2, -(size.height / 6 - 2 ) / 6 * 2));
+        cell->addChild(centeen,3);
+        
+//        auto label_price = Label::createWithSystemFont("单价：", "Arial", 24);
+//        label_price->setDimensions(this->getContentSize().width / 4,
+//                                   this->getContentSize().height * 1 / 4);
+//        label_price->setAnchorPoint(Vec2(0,0));
+//        label_price->setTextColor(Color4B(0,0,0,255));
+//        label_price->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+//        label_price->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+//        label_price->setPosition(Vec2(name->getPositionX(),
+//                                      name->getPositionY() - label_price->getContentSize().height));
+//        addChild(label_price,3);
+//        
+//        auto price = Label::createWithSystemFont(price_.c_str(), "Arial", 28);
+//        price->setDimensions(this->getContentSize().width / 4,
+//                             this->getContentSize().height * 1 / 4);
+//        price->setAnchorPoint(Vec2(0,0));
+//        price->setTextColor(Color4B(242, 39, 0 ,255));
+//        price->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+//        price->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+//        price->setPosition(Vec2(name->getPositionX() + price->getContentSize().width,
+//                                name->getPositionY() - label_price->getContentSize().height));
+//        addChild(price,3);
+
+        
+
+    }
     
     if (-1 == scene_info_)
     {
@@ -1025,11 +1296,11 @@ void ModCustomInfo::ClientInfoCallback(cocos2d::network::HttpClient *sender, coc
     sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
-    //    if (500 == statusCode)
-    //    {
-    //        UserLogIn();
-    //        return;
-    //    }
+    if (500 == statusCode&& 0 == ConfigJson::GetBoomNum())
+        {
+            GetClientInfo();
+            return;
+        }
     
     if (500 == statusCode && 0 == ConfigJson::GetBoomNum())
     {

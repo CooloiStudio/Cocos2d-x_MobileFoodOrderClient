@@ -8,6 +8,7 @@
 
 #include "mod_food_show.h"
 
+#include "mod_main_menu.h"
 ModFoodShow::ModFoodShow(std::string str):
 food_id_(-1),
 is_network_done_(-1)
@@ -162,6 +163,10 @@ void ModFoodShow::ButtonShopCallback(cocos2d::Ref *pSender, Widget::TouchEventTy
     switch (type) {
         case cocos2d::ui::Widget::TouchEventType::ENDED:
 //            GetList();
+            if (0 == LogInfo::GetLogIn())
+                BuySomething();
+            else
+                Director::getInstance()->replaceScene(ModMainMenu::createScene(0));
             break;
             
         default:
@@ -315,6 +320,110 @@ void ModFoodShow::OnDownloadComplete(cocos2d::network::HttpClient *sender, cocos
         fclose(fp);
         
         is_network_done_ = 0;
+    }
+}
+
+void ModFoodShow::BuySomething()
+{
+    auto path = FileUtils::getInstance()->getWritablePath() + "userinfo.json";
+    
+    auto user = FileUtils::getInstance()->getStringFromFile(path.c_str());
+    
+    HttpRequest *request = new HttpRequest();
+    request->setRequestType(HttpRequest::Type::POST);
+    request->setTag("POST test");
+    
+    rapidjson::Document d1;
+    rapidjson::Document::AllocatorType& allocator1 = d1.GetAllocator();
+    d1.Parse<0>(user.c_str());
+    
+    
+    d1.AddMember("food", custom_string::int_to_string(food_id_).c_str(), allocator1);
+    
+    
+    rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> write(buffer);
+    d1.Accept(write);
+    
+    rapidjson::Document d;
+    auto jsonpath = FileUtils::getInstance()->getWritablePath() + "config.json";
+    auto jsonstr = FileUtils::getInstance()->getStringFromFile(jsonpath.c_str());
+    d.Parse<0>(jsonstr.c_str());
+    assert(d.IsObject());
+    std::string ip = d["ip"].GetString();
+    std::string port = d["port"].GetString();
+    
+    auto str = "http://" + ip + ":" + port + "/clientaddtoorder/";
+    log("%s",buffer.GetString());
+    
+    request->setUrl(str.c_str());
+    //    std::string str = "username=123&password=123";
+    //    request->setRequestData(user.c_str(), user.size());
+        request->setRequestData(buffer.GetString(), buffer.Size());
+    
+    request->setResponseCallback(CC_CALLBACK_2(ModFoodShow::BuyCallback, this));
+    
+    HttpClient::getInstance()->send(request);
+    request->release();
+}
+
+void ModFoodShow::BuyCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response)
+{
+    if (!response) {
+        return;
+    }
+    
+    if (!response->isSucceed()) {
+        CCLOG("error %s", response->getErrorBuffer());
+        return;
+    }
+    
+    //    response->getResponseDataString()
+    
+    int statusCode = response->getResponseCode();
+    char statusString[64] = {};
+    sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
+    //    _labelStatusCode->setString(statusString);
+    log("response code: %d", statusCode);
+    //    if (500 == statusCode)
+    //    {
+    //        UserLogIn();
+    //        return;
+    //    }
+    
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum())
+    {
+        BuySomething();
+    }
+    
+    if (response->isSucceed())
+    {
+        std::string str = "";
+        std::vector<char>* v = response->getResponseData();
+        for (int i = 0; i < v->size(); i++)
+        {
+            //            printf("%c", v->at(i));
+            str = str + v->at(i);
+        }
+        log("%s",str.c_str());
+        printf("\n");
+        
+        rapidjson::Document d1;
+        d1.Parse<0>(str.c_str());
+        
+        if (d1.HasParseError())
+        {
+            log("%s",d1.GetParseError());
+            return;
+        }
+        
+        assert(d1.IsObject());
+        std::string test = "succeed";
+        log ("%s",d1["response"].GetString());
+        
+        
+        Director::getInstance()->replaceScene(ModCustomInfo::createScene(d1["order"]["id"].GetInt()));
+        
     }
 }
 
