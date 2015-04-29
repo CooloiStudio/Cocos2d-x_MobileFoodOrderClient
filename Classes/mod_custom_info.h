@@ -20,32 +20,42 @@
 #include "json/rapidjson.h"
 #include "json/writer.h"
 #include "json/stringbuffer.h"
+#include "network/HttpClient.h"
 
 USING_NS_CC;
 using namespace ui;
+using namespace extension;
 
-class ModCustomInfo : public Layer,
+class ModCustomInfo : public Scene,
 public extension::TableViewDataSource,
-public extension::TableViewDelegate
+public extension::TableViewDelegate,
+public EditBoxDelegate
 {
 private:
     LayerColor* layer_top_;
+    LayerColor* layer_bottom_;
     
     extension::TableView* menu_;
     
     std::string get_into_;
     
+    std::string address_;
+    
     int table_num_;
     
     int reget_;
     
+    int scene_info_;
+    
+    int id_;
+    
 #pragma mark - Initialization
 public:
-    ModCustomInfo();
+    ModCustomInfo(int info);
     ~ModCustomInfo(){}
-    virtual bool init();
-    static Scene* createScene();
-    CREATE_FUNC(ModCustomInfo);
+    bool init();
+    static Scene* createScene(int scene_info);
+//    CREATE_FUNC(ModCustomInfo);
     
 public:
     
@@ -54,6 +64,16 @@ public:
     void ButtonShopCallback(Ref* pSender, Widget::TouchEventType type);
     
     void InitMenu();
+    
+    void InitBottom();
+    virtual void editBoxEditingDigBegin(EditBox* editbox);
+    virtual void editBoxEditingDidEnd(EditBox* editbox);
+    virtual void editBoxTextChanged (EditBox *editBox, const std::string &text);
+    virtual void editBoxReturn (EditBox *editBox);
+    void BottomShopCallback(Ref *psender, Widget::TouchEventType type);
+    void SubmitShop();
+    void SubmitShopCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
+    
 
     void UserLogOut();
     void LogOutCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
@@ -61,6 +81,7 @@ public:
     void GetInfo();
     void GetInfoCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     
+    void SetSceneInfo(int scene_info);
     
 #pragma mark - TableView
     
@@ -72,6 +93,16 @@ public:
     virtual void tableCellTouched(extension::TableView* table,
                                   extension::TableViewCell* cell);
     virtual void scrollViewDidScroll(extension::ScrollView *view);
+    
+    
+    void GetClientorder();
+    void ClientorderCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
+    void InitOrder();
+    
+    void CreateFoodOrder();
+    
+    void GetClientInfo();
+    void ClientInfoCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     
 };
 

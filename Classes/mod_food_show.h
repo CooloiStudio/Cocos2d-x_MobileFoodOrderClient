@@ -13,6 +13,8 @@
 #include "cocos2d.h"
 #include "mod_http.h"
 #include "mod_check.h"
+#include "mod_custom_info.h"
+#include "Info.h"
 #include "cocos-ext.h"
 
 
@@ -38,6 +40,7 @@ class ModFoodShow : public Node
 private:
     
     int food_id_;
+    int reget_;
     int is_network_done_;
     Sprite* img_;
     ModHttp* mod_http_;
@@ -86,7 +89,8 @@ public:
     int DownloadPicture();
     void OnDownloadComplete(HttpClient *sender, HttpResponse *response);
     
-    
+    void BuySomething();
+    void BuyCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
 };
 
 #endif /* defined(__MobileFoodOrderClient__mod_food_show__) */

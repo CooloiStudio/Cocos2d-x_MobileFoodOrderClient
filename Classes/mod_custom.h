@@ -41,6 +41,7 @@ private:
     
     std::string food_list_;
     
+    int reget_;
     
     EventListener* listener_;
 #pragma mark - Initialization

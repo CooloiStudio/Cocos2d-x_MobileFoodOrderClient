@@ -33,6 +33,7 @@ class ModMainMenu : public Layer,public EditBoxDelegate
 private:
     
     int login_;//login = 0 为登陆，-1为注册
+    int reget_;
     
     std::string user_name_;
     std::string user_password_;

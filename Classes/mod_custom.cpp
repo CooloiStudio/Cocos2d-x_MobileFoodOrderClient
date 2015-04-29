@@ -8,7 +8,8 @@
 
 #include "mod_custom.h"
 
-ModCustom::ModCustom()
+ModCustom::ModCustom():
+reget_(0)
 {
     
 }
@@ -229,7 +230,7 @@ void ModCustom::ButtonInfoCallback(cocos2d::Ref *pSender, Widget::TouchEventType
 {
     if (LogInfo::GetLogIn() == 0)
     {
-        Director::getInstance()->replaceScene(ModCustomInfo::createScene());
+        Director::getInstance()->replaceScene(ModCustomInfo::createScene(0));
     }
     else
     {
@@ -310,8 +311,9 @@ void ModCustom::ListCallback(cocos2d::network::HttpClient *sender, cocos2d::netw
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
     
-    if (500 == statusCode)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
     {
+        reget_++;
         GetList();
         return;
     }
@@ -346,7 +348,7 @@ void ModCustom::ListCallback(cocos2d::network::HttpClient *sender, cocos2d::netw
 //        log ("%s",d1["response"].GetString());
 //        if (test == d1["response"].GetString())
 //        {
-//            //            auto scene = ModCustomInfo::createScene();
+//            //            auto scene = x();
 //            //            Director::getInstance()->replaceScene(scene);
 //        }
         InitFood();
