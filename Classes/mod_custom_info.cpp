@@ -284,7 +284,7 @@ void ModCustomInfo::GetInfo()
     //    std::string str = "username=123&password=123";
         request->setRequestData(user.c_str(), user.size());
     
-    
+    log("Get Info is %s",user.c_str());
     
     request->setResponseCallback(CC_CALLBACK_2(ModCustomInfo::GetInfoCallback, this));
     HttpClient::getInstance()->send(request);
@@ -717,9 +717,9 @@ void ModCustomInfo::CreateTableView()
     auto size = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
     if (0 < scene_info_)
-        menu_ = extension::TableView::create(this, Size(Size(size.width, size.height - layer_top_->getContentSize().height - size.height / 6)));
+        menu_ = extension::TableView::create(this, Size(Size(size.width, size.height - size.height / 15 - size.height / 6)));
     else
-        menu_ = extension::TableView::create(this, Size(Size(size.width, size.height - layer_top_->getContentSize().height)));
+        menu_ = extension::TableView::create(this, Size(Size(size.width, size.height - size.height / 15)));
     menu_->setPosition(Vec2(origin.x, origin.y + size.height / 15));
     //        menu_->setPosition(Vec2(origin.x + size.width / 4, origin.y));
     menu_->setViewSize(Size(menu_->getViewSize().width, menu_->getViewSize().height - size.height / 15));
@@ -1191,17 +1191,17 @@ void ModCustomInfo::GetClientorder()
     request->setRequestType(HttpRequest::Type::POST);
     request->setTag("POST test");
     
-    rapidjson::Document d1;
-    rapidjson::Document::AllocatorType& allocator1 = d1.GetAllocator();
-    d1.Parse<0>(user.c_str());
+//    rapidjson::Document d1;
+//    rapidjson::Document::AllocatorType& allocator1 = d1.GetAllocator();
+//    d1.Parse<0>(user.c_str());
+//    
+//    
+//    d1.AddMember("order", "3", allocator1);
     
     
-    d1.AddMember("order", "3", allocator1);
-    
-    
-    rapidjson::StringBuffer buffer;
-    rapidjson::Writer<rapidjson::StringBuffer> write(buffer);
-    d1.Accept(write);
+//    rapidjson::StringBuffer buffer;
+//    rapidjson::Writer<rapidjson::StringBuffer> write(buffer);
+//    d1.Accept(write);
     
     rapidjson::Document d;
     auto jsonpath = FileUtils::getInstance()->getWritablePath() + "config.json";
@@ -1212,7 +1212,7 @@ void ModCustomInfo::GetClientorder()
     std::string port = d["port"].GetString();
     
     auto str = "http://" + ip + ":" + port + "/clientorder/";
-    log("%s",buffer.GetString());
+//    log("%s",buffer.GetString());
     
     request->setUrl(str.c_str());
     //    std::string str = "username=123&password=123";
@@ -1222,7 +1222,8 @@ void ModCustomInfo::GetClientorder()
     }
     else
     {
-        request->setRequestData(buffer.GetString(), buffer.Size());
+//        request->setRequestData(buffer.GetString(), buffer.Size());
+        request->setRequestData(user.c_str(), user.size());
     }
     request->setResponseCallback(CC_CALLBACK_2(ModCustomInfo::ClientorderCallback, this));
     
