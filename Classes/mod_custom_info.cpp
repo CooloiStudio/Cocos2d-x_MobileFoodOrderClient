@@ -78,14 +78,14 @@ void ModCustomInfo::InitTop()
     button_back->setPosition(Vec2(layer_top_->getPositionX() + button_back->getContentSize().width / 2 * scale,layer_top_->getPositionY() + layer_top_->getContentSize().height / 2));
     button_back->addTouchEventListener(CC_CALLBACK_2(ModCustomInfo::ButtonBackCallback, this));
     
-    auto button_shop = Button::create("shop.png");
-    button_shop->setScale(scale);
-    button_shop->setPosition(Vec2(layer_top_->getPositionX() + size.width - button_back->getContentSize().width / 2 * scale,layer_top_->getPositionY() + layer_top_->getContentSize().height / 2));
-    button_shop->addTouchEventListener(CC_CALLBACK_2(ModCustomInfo::ButtonShopCallback, this));
+//    auto button_shop = Button::create("shop.png");
+//    button_shop->setScale(scale);
+//    button_shop->setPosition(Vec2(layer_top_->getPositionX() + size.width - button_back->getContentSize().width / 2 * scale,layer_top_->getPositionY() + layer_top_->getContentSize().height / 2));
+//    button_shop->addTouchEventListener(CC_CALLBACK_2(ModCustomInfo::ButtonShopCallback, this));
     
     
     addChild(button_back,2);
-    addChild(button_shop,2);
+//    addChild(button_shop,2);
     addChild(label_title,2);
     addChild(layer_top_,1);
 }
@@ -251,7 +251,9 @@ void ModCustomInfo::GetInfoCallback(cocos2d::network::HttpClient *sender, cocos2
         log("%s",get_into_.c_str());
         printf("\n");
         
-        Director::getInstance()->replaceScene(ModCustomInfo::createScene(-1));
+//        Director::getInstance()->replaceScene(ModCustomInfo::createScene(-1));
+//        getLights();
+        CreateTableView();
     }
     
     
@@ -331,7 +333,7 @@ void ModCustomInfo::InitBottom()
     layer_bottom_->setPosition(Vec2(origin.x ,origin.y));
     layer_bottom_->setCascadeColorEnabled(true);
     
-        auto label = Label::createWithSystemFont(" 收货地址： ", "Arial", 24);
+        auto label = Label::createWithSystemFont("收货地址", "Arial", 22);
         label->setContentSize(Size(layer_bottom_->getContentSize().width / 5, size.height / 15));
         label->setDimensions(layer_bottom_->getContentSize().width / 5, layer_bottom_->getContentSize().height);
         label->setAnchorPoint(Vec2(0,0));

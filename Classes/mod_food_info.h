@@ -18,6 +18,7 @@
 #include "json/stringbuffer.h"
 
 #include "mod_custom_info.h"
+#include "info.h"
 
 #include "cocos-ext.h"
 #include "custom_string.h"
@@ -30,6 +31,7 @@ class ModFoodInfo : public Scene
 {
 private:
     int food_id_;
+    int reget_;
     std::string canteen_;
     std::string name_;
     std::string img_ad_;
@@ -64,6 +66,9 @@ public:
     virtual void editBoxEditingDidEnd(EditBox* editbox);
     virtual void editBoxTextChanged (EditBox *editBox, const std::string &text);
     virtual void editBoxReturn (EditBox *editBox);
+    
+    void BuySomething();
+    void BuyCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     
 };
 

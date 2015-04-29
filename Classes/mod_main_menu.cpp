@@ -471,6 +471,14 @@ void ModMainMenu::LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::n
             return;
         }
         
+        
+        if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 100 > reget_)
+        {
+            reget_++;
+            UserLogIn();
+            return;
+        }
+        
         assert(d1.IsObject());
         std::string test = "succeed";
         log ("%s",d1["response"].GetString());

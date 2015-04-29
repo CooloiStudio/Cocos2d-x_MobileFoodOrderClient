@@ -9,7 +9,8 @@
 #include "mod_food_info.h"
 
 
-ModFoodInfo::ModFoodInfo(std::string food)
+ModFoodInfo::ModFoodInfo(std::string food):
+reget_(0)
 {
     rapidjson::Document d1;
     d1.Parse<0>(food.c_str());
@@ -105,6 +106,15 @@ void ModFoodInfo::ButtonInfoCallback(cocos2d::Ref *psender, Widget::TouchEventTy
 void ModFoodInfo::ButtonShopCallback(cocos2d::Ref *psender, Widget::TouchEventType type)
 {
     
+    switch (type) {
+        case cocos2d::ui::Widget::TouchEventType::ENDED:
+            if (0 == LogInfo::GetLogIn())
+                BuySomething();
+            break;
+            
+        default:
+            break;
+    }
 }
 
 void ModFoodInfo::InitFood()
@@ -112,7 +122,7 @@ void ModFoodInfo::InitFood()
     auto origin = Director::getInstance()->getVisibleOrigin();
     auto size = Director::getInstance()->getVisibleSize();
     auto img_name_ = FileUtils::getInstance()->getWritablePath() + "food_" + custom_string::int_to_string(food_id_) + ".png";
-    auto sprite = Sprite::create(img_name_.c_str());
+    auto sprite = Sprite::create(  img_name_.c_str());
     sprite->setScale(size.width / (sprite->getContentSize().width * 1.5));
     sprite->setAnchorPoint(Vec2(0,0));
     sprite->setPosition(Vec2(origin.x + (size.width - sprite->getContentSize().width)/ 2,
@@ -195,6 +205,7 @@ void ModFoodInfo::InitBottom()
     shop->setScale(scale);
     shop->setAnchorPoint(Vec2(0,0));
     shop->setPosition(Vec2(layer_bottom_->getContentSize().width - shop->getContentSize().width * scale, 0));
+    shop->addTouchEventListener(CC_CALLBACK_2(ModFoodInfo::ButtonShopCallback, this));
     
     auto labelshop = Label::createWithSystemFont("加入购物车", "Arial", 24);
     labelshop->setTextColor(Color4B(255,255,255,255));
@@ -229,6 +240,112 @@ void ModFoodInfo::editBoxReturn(cocos2d::ui::EditBox *editBox)
 void ModFoodInfo::editBoxEditingDidEnd(cocos2d::ui::EditBox *editbox)
 {
     
+}
+
+void ModFoodInfo::BuySomething()
+{
+    auto path = FileUtils::getInstance()->getWritablePath() + "userinfo.json";
+    
+    auto user = FileUtils::getInstance()->getStringFromFile(path.c_str());
+    
+    HttpRequest *request = new HttpRequest();
+    request->setRequestType(HttpRequest::Type::POST);
+    request->setTag("POST test");
+    
+    rapidjson::Document d1;
+    rapidjson::Document::AllocatorType& allocator1 = d1.GetAllocator();
+    d1.Parse<0>(user.c_str());
+    
+    
+    d1.AddMember("food", food_id_, allocator1);
+    
+    
+    rapidjson::StringBuffer buffer;
+    rapidjson::Writer<rapidjson::StringBuffer> write(buffer);
+    d1.Accept(write);
+    
+    rapidjson::Document d;
+    auto jsonpath = FileUtils::getInstance()->getWritablePath() + "config.json";
+    auto jsonstr = FileUtils::getInstance()->getStringFromFile(jsonpath.c_str());
+    d.Parse<0>(jsonstr.c_str());
+    assert(d.IsObject());
+    std::string ip = d["ip"].GetString();
+    std::string port = d["port"].GetString();
+    
+    auto str = "http://" + ip + ":" + port + "/clientaddtoorder/";
+    log("%s",buffer.GetString());
+    
+    request->setUrl(str.c_str());
+    //    std::string str = "username=123&password=123";
+    //    request->setRequestData(user.c_str(), user.size());
+    request->setRequestData(buffer.GetString(), buffer.Size());
+    
+    request->setResponseCallback(CC_CALLBACK_2(ModFoodInfo::BuyCallback, this));
+    
+    HttpClient::getInstance()->send(request);
+    request->release();
+}
+
+void ModFoodInfo::BuyCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response)
+{
+    if (!response) {
+        return;
+    }
+    
+    if (!response->isSucceed()) {
+        CCLOG("error %s", response->getErrorBuffer());
+        return;
+    }
+    
+    //    response->getResponseDataString()
+    
+    int statusCode = response->getResponseCode();
+    char statusString[64] = {};
+    sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
+    //    _labelStatusCode->setString(statusString);
+    log("response code: %d", statusCode);
+    //    if (500 == statusCode)
+    //    {
+    //        UserLogIn();
+    //        return;
+    //    }
+    
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 100 > reget_)
+    {
+        reget_++;
+        BuySomething();
+        return;
+    }
+    
+    if (response->isSucceed())
+    {
+        std::string str = "";
+        std::vector<char>* v = response->getResponseData();
+        for (int i = 0; i < v->size(); i++)
+        {
+            //            printf("%c", v->at(i));
+            str = str + v->at(i);
+        }
+        log("%s",str.c_str());
+        printf("\n");
+        
+        rapidjson::Document d1;
+        d1.Parse<0>(str.c_str());
+        
+        if (d1.HasParseError())
+        {
+            log("%s",d1.GetParseError());
+            return;
+        }
+        
+        assert(d1.IsObject());
+        std::string test = "succeed";
+        log ("%s",d1["response"].GetString());
+        
+        
+        Director::getInstance()->replaceScene(ModCustomInfo::createScene(d1["order"]["id"].GetInt()));
+        
+    }
 }
 
 

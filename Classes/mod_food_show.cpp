@@ -166,8 +166,8 @@ void ModFoodShow::ButtonShopCallback(cocos2d::Ref *pSender, Widget::TouchEventTy
 //            GetList();
             if (0 == LogInfo::GetLogIn())
                 BuySomething();
-//            else
-//                Director::getInstance()->replaceScene(ModMainMenu::createScene(0));
+            else
+                Director::getInstance()->replaceScene(ModMainMenu::createScene(0));
             break;
             
         default:
