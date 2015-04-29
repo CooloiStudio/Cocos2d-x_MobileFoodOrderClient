@@ -424,7 +424,7 @@ void ModCustomInfo::SubmitShop()
     std::string port = d["port"].GetString();
     
     auto str = "http://" + ip + ":" + port + "/clientorderconfirm/";
-    
+    log("%s",buffer.GetString());
     request->setUrl(str.c_str());
     //    std::string str = "username=123&password=123";
     request->setRequestData(buffer.GetString(), buffer.Size());
