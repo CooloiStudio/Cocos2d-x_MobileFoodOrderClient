@@ -8,7 +8,8 @@
 
 #include "mod_custom.h"
 
-ModCustom::ModCustom()
+ModCustom::ModCustom():
+reget_(0)
 {
     
 }
@@ -310,8 +311,9 @@ void ModCustom::ListCallback(cocos2d::network::HttpClient *sender, cocos2d::netw
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
     
-    if (500 == statusCode)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
     {
+        reget_++;
         GetList();
         return;
     }

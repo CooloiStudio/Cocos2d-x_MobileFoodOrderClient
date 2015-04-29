@@ -47,6 +47,8 @@ private:
     
     int scene_info_;
     
+    int id_;
+    
 #pragma mark - Initialization
 public:
     ModCustomInfo(int info);

@@ -10,7 +10,7 @@
 #include "mod_custom.h"
 
 ModCustomInfo::ModCustomInfo(int info):
-reget_(0),
+reget_(20),
 scene_info_(info)
 {
     
@@ -106,7 +106,7 @@ void ModCustomInfo::ButtonShopCallback(cocos2d::Ref *pSender, Widget::TouchEvent
 //    UserLogOut();
 //    GetInfo();
     
-    
+    Director::getInstance()->replaceScene(ModCustomInfo::createScene(-1));
 //    auto* ret = ModShopping::createScene();
 //    Director::getInstance()->pushScene(ret);
 }
@@ -135,8 +135,9 @@ void ModCustomInfo::LogOutCallback(cocos2d::network::HttpClient *sender, cocos2d
     sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
-    if (500 == statusCode)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
     {
+        reget_++;
         UserLogOut();
         return;
     }
@@ -229,8 +230,9 @@ void ModCustomInfo::GetInfoCallback(cocos2d::network::HttpClient *sender, cocos2
     sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum())
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
     {
+        reget_++;
 //        UserLogOut();
         GetInfo();
         return;
@@ -374,7 +376,10 @@ void ModCustomInfo::InitBottom()
 
 void ModCustomInfo::BottomShopCallback(cocos2d::Ref *psender, Widget::TouchEventType type)
 {
-    SubmitShop();
+    if (2 < address_.size())
+    {
+        SubmitShop();
+    }
 }
 
 void ModCustomInfo::SubmitShop()
@@ -383,11 +388,20 @@ void ModCustomInfo::SubmitShop()
     auto path = FileUtils::getInstance()->getWritablePath() + "userinfo.json";
     
     auto user = FileUtils::getInstance()->getStringFromFile(path.c_str());
+    
+//    
+//    rapidjson::Document d2;
+//    d2.Parse<0>(get_into_.c_str());
+//    int strid = d2["order"]["id"].GetInt();
+    
     rapidjson::Document d1;
     rapidjson::Document::AllocatorType& allocator = d1.GetAllocator();
     d1.Parse<0>(user.c_str());
+    
     d1.AddMember("address", address_.c_str(), allocator);
+    d1.AddMember("order_id", custom_string::int_to_string(id_).c_str(), allocator);
 
+    
     rapidjson::StringBuffer buffer;
     rapidjson::Writer<rapidjson::StringBuffer> write(buffer);
     d1.Accept(write);
@@ -406,7 +420,7 @@ void ModCustomInfo::SubmitShop()
     std::string ip = d["ip"].GetString();
     std::string port = d["port"].GetString();
     
-    auto str = "http://" + ip + ":" + port + "/clientuserinfo/";
+    auto str = "http://" + ip + ":" + port + "/clientorderconfirm/";
     
     request->setUrl(str.c_str());
     //    std::string str = "username=123&password=123";
@@ -414,7 +428,7 @@ void ModCustomInfo::SubmitShop()
     
     
     
-    request->setResponseCallback(CC_CALLBACK_2(ModCustomInfo::GetInfoCallback, this));
+    request->setResponseCallback(CC_CALLBACK_2(ModCustomInfo::SubmitShopCallback, this));
     HttpClient::getInstance()->send(request);
     request->release();
 }
@@ -443,10 +457,14 @@ void ModCustomInfo::SubmitShopCallback(cocos2d::network::HttpClient *sender, coc
     //        return;
     //    }
     
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum())
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
     {
+        reget_++;
         SubmitShop();
+        return;
     }
+    if (404 == statusCode)
+        return;
     
     if (response->isSucceed())
     {
@@ -474,6 +492,8 @@ void ModCustomInfo::SubmitShopCallback(cocos2d::network::HttpClient *sender, coc
         std::string test = "succeed";
         log ("%s",d1["response"].GetString());
         
+        
+        Director::getInstance()->replaceScene(ModCustomInfo::createScene(-1));
 //        CreateFoodOrder();
 //        CreateTableView();
         
@@ -536,7 +556,9 @@ void ModCustomInfo::CreateFoodOrder()
     
     
     int strid = d1["order"]["id"].GetInt();
+    id_ = d1["order"]["id"].GetInt();
     auto label_id = Label::createWithSystemFont(custom_string::int_to_string(strid).c_str(), "Arial", 24);
+    
     //        label->setContentSize(Size( size.width / 2, size.height / 10));
     label_id->setDimensions( size.width, size.height / 6);
     label_id->setTextColor(Color4B(0,0,0,255));
@@ -582,15 +604,53 @@ void ModCustomInfo::CreateFoodOrder()
     
     bg->addChild(label);
     
+
+    
+    auto label_buff = Label::createWithSystemFont("", "Arial", 24);
     std::string suc = d1["order"]["confirm"].GetString();
     str = "未确定";
     if ("True" == suc)
+    {
         str = "派送中";
+    }
+    else
+    {
+//        label_buff->setTextColor(Color4B(242,39,0,255));
+//        auto edit = EditBox::create(Size(size.width / 2,size.height / 36 * 2), "edit.png");
+//        edit->setAnchorPoint(Vec2(0,0));
+//        edit->setPosition(Vec2(label->getPosition().x + label->getContentSize().width,2));
+//        edit->setMaxLength(16);
+//        edit->setFontColor(Color3B(0,0,0));
+//        //        edit->setInputMode(cocos2d::ui::EditBox::InputMode::NUMERIC);
+//        //    edit_name_->setFontSize(24);
+//        edit->setDelegate(this);
+//        bg->addChild(edit,1);
+//        
+//        auto shop = Button::create("foodshop.png");
+//        auto scale = size.width / (shop->getContentSize().width * 3);
+//        shop->setScale(scale);
+//        shop->setAnchorPoint(Vec2(0,0));
+//        shop->addTouchEventListener(CC_CALLBACK_2(ModCustomInfo::BottomShopCallback, this));
+//        shop->setPosition(Vec2(bg_sprite->getPosition().x + size.width - shop->getContentSize().width, bg_sprite->getPosition().y + 0));
+//                shop->setPosition(Vec2(0, 0));
+//        
+//        auto labelshop = Label::createWithSystemFont("确认订单", "Arial", 24);
+//        labelshop->setTextColor(Color4B(255,255,255,255));
+//        labelshop->setDimensions(shop->getContentSize().width * scale, shop->getContentSize().height * scale);
+//        labelshop->setHorizontalAlignment(cocos2d::TextHAlignment::CENTER);
+//        labelshop->setVerticalAlignment(cocos2d::TextVAlignment::CENTER);
+//        labelshop->setAnchorPoint(Vec2(0,0));
+//        labelshop->setPosition(shop->getPosition());
+//        
+//        bg->addChild(shop);
+//        bg->addChild(labelshop,2);
+        InitBottom();
+    }
     suc = d1["order"]["deal"].GetString();
     if ("True" == suc)
         str = "交易已完成";
     
-    auto label_buff = Label::createWithSystemFont(str, "Arial", 24);
+    label_buff->setString(str);
     //        label->setContentSize(Size( size.width / 2, size.height / 10));
     label_buff->setDimensions( size.width, size.height / 6);
     label_buff->setTextColor(Color4B(0,0,0,255));
@@ -657,9 +717,9 @@ void ModCustomInfo::CreateTableView()
         menu_ = extension::TableView::create(this, Size(Size(size.width, size.height - layer_top_->getContentSize().height - size.height / 6)));
     else
         menu_ = extension::TableView::create(this, Size(Size(size.width, size.height - layer_top_->getContentSize().height)));
-    menu_->setPosition(Vec2(origin.x, origin.y));
+    menu_->setPosition(Vec2(origin.x, origin.y + size.height / 15));
     //        menu_->setPosition(Vec2(origin.x + size.width / 4, origin.y));
-    
+    menu_->setViewSize(Size(menu_->getViewSize().width, menu_->getViewSize().height - size.height / 15));
     menu_->setBounceable(true);
     menu_->setDirection(extension::ScrollView::Direction::VERTICAL);
     menu_->setVerticalFillOrder(extension::TableView::VerticalFillOrder::TOP_DOWN);
@@ -1191,9 +1251,11 @@ void ModCustomInfo::ClientorderCallback(cocos2d::network::HttpClient *sender, co
     //        return;
     //    }
     
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum())
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
     {
+        reget_++;
         GetClientorder();
+        return;
     }
     
     if (response->isSucceed())
@@ -1296,16 +1358,17 @@ void ModCustomInfo::ClientInfoCallback(cocos2d::network::HttpClient *sender, coc
     sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
-    if (500 == statusCode&& 0 == ConfigJson::GetBoomNum())
-        {
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    {
+        reget_++;
             GetClientInfo();
             return;
         }
-    
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum())
-    {
-        GetClientInfo();
-    }
+//    
+//    if (500 == statusCode && 0 == ConfigJson::GetBoomNum())
+//    {
+//        GetClientInfo();
+//    }
     
     if (response->isSucceed())
     {

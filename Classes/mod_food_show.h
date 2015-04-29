@@ -40,6 +40,7 @@ class ModFoodShow : public Node
 private:
     
     int food_id_;
+    int reget_;
     int is_network_done_;
     Sprite* img_;
     ModHttp* mod_http_;

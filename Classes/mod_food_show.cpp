@@ -11,7 +11,8 @@
 #include "mod_main_menu.h"
 ModFoodShow::ModFoodShow(std::string str):
 food_id_(-1),
-is_network_done_(-1)
+is_network_done_(-1),
+reget_(20)
 {
     str_ = str;
     rapidjson::Document d1;
@@ -391,9 +392,11 @@ void ModFoodShow::BuyCallback(cocos2d::network::HttpClient *sender, cocos2d::net
     //        return;
     //    }
     
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum())
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
     {
+        reget_++;
         BuySomething();
+        return;
     }
     
     if (response->isSucceed())
