@@ -59,13 +59,14 @@ bool ModCustom::init()
 
 void ModCustom::InitFood()
 {
+    auto size = Director::getInstance()->getVisibleSize();
     auto origin = Director::getInstance()->getVisibleOrigin();
 //    layer_ = Layer::create();
     layer_list_ = ScrollView::create();
-    layer_list_->setViewSize(Size(Director::getInstance()->getVisibleSize().width,Director::getInstance()->getVisibleSize().height - layer_top_->getContentSize().height));
+    layer_list_->setViewSize(Size(Director::getInstance()->getVisibleSize().width,Director::getInstance()->getVisibleSize().height - size.height / 15));
     layer_list_->setBounceable(true);
     layer_list_->setDirection(ScrollView::Direction::VERTICAL);
-    addChild(layer_list_,2);
+    this->addChild(layer_list_,2);
     layer_list_->setPosition(Vec2(origin.x,
                                   layer_list_->getPositionY()));
     
@@ -311,7 +312,7 @@ void ModCustom::ListCallback(cocos2d::network::HttpClient *sender, cocos2d::netw
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
     
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 100 > reget_)
     {
         reget_++;
         GetList();

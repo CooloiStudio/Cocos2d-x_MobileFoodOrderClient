@@ -94,6 +94,7 @@ void ModFoodInfo::InitTop()
 void ModFoodInfo::ButtonBackCallback(cocos2d::Ref *psender, Widget::TouchEventType type)
 {
     Director::getInstance()->popScene();
+
 }
 
 void ModFoodInfo::ButtonInfoCallback(cocos2d::Ref *psender, Widget::TouchEventType type)

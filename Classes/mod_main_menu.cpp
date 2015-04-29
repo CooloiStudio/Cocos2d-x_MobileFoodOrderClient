@@ -378,7 +378,7 @@ void ModMainMenu::ButtonSignupCallback(cocos2d::Ref *pSender, Widget::TouchEvent
         case cocos2d::ui::Widget::TouchEventType::ENDED:
         {
             
-                Director::getInstance()->pushScene(createScene(-1));
+                Director::getInstance()->replaceScene(createScene(-1));
         }
             break;
         default:
@@ -441,7 +441,7 @@ void ModMainMenu::LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::n
 //        UserLogIn();
 //        return;
 //    }
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 100 > reget_)
     {
         reget_++;
         //        GetClientorder();
@@ -563,7 +563,7 @@ void ModMainMenu::SignUpCallback(cocos2d::network::HttpClient *sender, cocos2d::
     //        UserLogIn();
     //        return;
     //    }
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 100 > reget_)
     {
         reget_++;
         //        GetClientorder();

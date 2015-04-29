@@ -135,7 +135,7 @@ void ModCustomInfo::LogOutCallback(cocos2d::network::HttpClient *sender, cocos2d
     sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 100 > reget_)
     {
         reget_++;
         UserLogOut();
@@ -230,7 +230,7 @@ void ModCustomInfo::GetInfoCallback(cocos2d::network::HttpClient *sender, cocos2
     sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 100 > reget_)
     {
         reget_++;
 //        UserLogOut();
@@ -457,7 +457,7 @@ void ModCustomInfo::SubmitShopCallback(cocos2d::network::HttpClient *sender, coc
     //        return;
     //    }
     
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 100 > reget_)
     {
         reget_++;
         SubmitShop();
@@ -1251,7 +1251,7 @@ void ModCustomInfo::ClientorderCallback(cocos2d::network::HttpClient *sender, co
     //        return;
     //    }
     
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 100 > reget_)
     {
         reget_++;
         GetClientorder();
@@ -1307,6 +1307,7 @@ void ModCustomInfo::GetClientInfo()
     
     
     d1.AddMember("order", custom_string::int_to_string(scene_info_).c_str(), allocator1);
+    d1.AddMember("order", scene_info_, allocator1);
     
     
     rapidjson::StringBuffer buffer;
@@ -1358,7 +1359,7 @@ void ModCustomInfo::ClientInfoCallback(cocos2d::network::HttpClient *sender, coc
     sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 100 > reget_)
     {
         reget_++;
             GetClientInfo();

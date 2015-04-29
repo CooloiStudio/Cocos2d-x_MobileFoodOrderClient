@@ -166,8 +166,8 @@ void ModFoodShow::ButtonShopCallback(cocos2d::Ref *pSender, Widget::TouchEventTy
 //            GetList();
             if (0 == LogInfo::GetLogIn())
                 BuySomething();
-            else
-                Director::getInstance()->replaceScene(ModMainMenu::createScene(0));
+//            else
+//                Director::getInstance()->replaceScene(ModMainMenu::createScene(0));
             break;
             
         default:
@@ -339,7 +339,7 @@ void ModFoodShow::BuySomething()
     d1.Parse<0>(user.c_str());
     
     
-    d1.AddMember("food", custom_string::int_to_string(food_id_).c_str(), allocator1);
+    d1.AddMember("food", food_id_, allocator1);
     
     
     rapidjson::StringBuffer buffer;
@@ -392,7 +392,7 @@ void ModFoodShow::BuyCallback(cocos2d::network::HttpClient *sender, cocos2d::net
     //        return;
     //    }
     
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 100 > reget_)
     {
         reget_++;
         BuySomething();
