@@ -310,7 +310,7 @@ void ModFoodInfo::BuyCallback(cocos2d::network::HttpClient *sender, cocos2d::net
     //        return;
     //    }
     
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 64 > reget_)
     {
         reget_++;
         BuySomething();

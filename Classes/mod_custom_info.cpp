@@ -135,7 +135,7 @@ void ModCustomInfo::LogOutCallback(cocos2d::network::HttpClient *sender, cocos2d
     sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 64 > reget_)
     {
         reget_++;
         UserLogOut();
@@ -230,7 +230,7 @@ void ModCustomInfo::GetInfoCallback(cocos2d::network::HttpClient *sender, cocos2
     sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 64 > reget_)
     {
         reget_++;
 //        UserLogOut();
@@ -460,7 +460,7 @@ void ModCustomInfo::SubmitShopCallback(cocos2d::network::HttpClient *sender, coc
     //        return;
     //    }
     
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 64 > reget_)
     {
         reget_++;
         SubmitShop();
@@ -496,14 +496,19 @@ void ModCustomInfo::SubmitShopCallback(cocos2d::network::HttpClient *sender, coc
         std::string test = "succeed";
         log ("submit is and %s",d1["response"].GetString());
         
-        
-        Director::getInstance()->replaceScene(ModCustomInfo::createScene(id_));
+        scheduleOnce(schedule_selector(ModCustomInfo::SubmitChange), 1.0);
 //        CreateFoodOrder();
 //        CreateTableView();
         
         
     }
 
+}
+
+void ModCustomInfo::SubmitChange(float dt)
+{
+    Director::getInstance()->replaceScene(ModCustomInfo::createScene(id_));
+    
 }
 
 void ModCustomInfo::editBoxTextChanged(cocos2d::ui::EditBox *editBox, const std::string &text)
@@ -1256,7 +1261,7 @@ void ModCustomInfo::ClientorderCallback(cocos2d::network::HttpClient *sender, co
     //        return;
     //    }
     
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 64 > reget_)
     {
         reget_++;
         GetClientorder();
@@ -1365,7 +1370,7 @@ void ModCustomInfo::ClientInfoCallback(cocos2d::network::HttpClient *sender, coc
     sprintf(statusString, "HTTP Status Code: %d, tag = %s", statusCode, response->getHttpRequest()->getTag());
     //    _labelStatusCode->setString(statusString);
     log("response code: %d", statusCode);
-    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 32 > reget_)
+    if (500 == statusCode && 0 == ConfigJson::GetBoomNum() && 64 > reget_)
     {
         reget_++;
             GetClientInfo();

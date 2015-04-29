@@ -73,7 +73,7 @@ public:
     void BottomShopCallback(Ref *psender, Widget::TouchEventType type);
     void SubmitShop();
     void SubmitShopCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
-    
+    void SubmitChange(float dt);
 
     void UserLogOut();
     void LogOutCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
