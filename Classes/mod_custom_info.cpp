@@ -402,6 +402,7 @@ void ModCustomInfo::SubmitShop()
     
     d1.AddMember("address", address_.c_str(), allocator);
     d1.AddMember("order_id", custom_string::int_to_string(id_).c_str(), allocator);
+    d1.AddMember("order_id", id_, allocator);
 
     
     rapidjson::StringBuffer buffer;
@@ -1308,7 +1309,8 @@ void ModCustomInfo::GetClientInfo()
     d1.Parse<0>(user.c_str());
     
     
-    d1.AddMember("order", custom_string::int_to_string(scene_info_).c_str(), allocator1);
+//    d1.AddMember("order", custom_string::int_to_string(scene_info_).c_str(), allocator1);
+//    d1.AddMember("order", scene_info_, allocator1);
     d1.AddMember("order", scene_info_, allocator1);
     
     
