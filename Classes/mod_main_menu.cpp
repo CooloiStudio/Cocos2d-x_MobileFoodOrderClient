@@ -149,7 +149,7 @@ void ModMainMenu::CreateEdit()
         edit_pass_->setPlaceholderFontSize(10);
         edit_pass_->setPlaceholderFontColor(Color3B(0,0,0));
         edit_pass_->setPlaceHolder(port.c_str());
-        edit_name_->setInputMode(cocos2d::ui::EditBox::InputMode::DECIMAL);
+//        edit_name_->setInputMode(cocos2d::ui::EditBox::InputMode::DECIMAL);
         edit_pass_->setInputMode(cocos2d::ui::EditBox::InputMode::NUMERIC);
 
         auto label_name = Label::createWithSystemFont("地址:", "Airal", 24);
