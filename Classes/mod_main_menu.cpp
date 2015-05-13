@@ -75,6 +75,7 @@ bool ModMainMenu::init(int login)
     
 }
 
+
 void ModMainMenu::CreateEdit()
 {
     auto edit_back = LayerColor::create(Color4B(240,240,255,62));

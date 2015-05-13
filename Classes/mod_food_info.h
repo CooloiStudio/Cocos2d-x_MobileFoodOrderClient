@@ -26,6 +26,7 @@
 USING_NS_CC;
 using namespace  ui;
 using namespace extension;
+using namespace network;
 
 class ModFoodInfo : public Scene
 {
@@ -51,6 +52,7 @@ public:
 
 public:
     
+    //  初始化食物信息
     void InitTop();
     void InitBottom();
     void InitFood();

@@ -17,6 +17,7 @@
 #include "network/HttpClient.h"
 #include "mod_custom_info.h"
 #include "mod_config_json.h"
+#include "mod_http.h"
 
 #include "json/document.h"
 #include "json/rapidjson.h"
@@ -58,13 +59,14 @@ public:
 public:
     void SetLogin(int login) {login_ = login;}
     
-    
+    //初始化文本框及文本框的回调函数
     void CreateEdit();
     virtual void editBoxEditingDigBegin(EditBox* editbox);
     virtual void editBoxEditingDidEnd(EditBox* editbox);
     virtual void editBoxTextChanged (EditBox *editBox, const std::string &text);
     virtual void editBoxReturn (EditBox *editBox);
     
+    //  初始化按钮及按钮的回调函数
     void CreateButton();
     void ButtonLoginCallback(Ref* pSender, Widget::TouchEventType type);
     
@@ -76,10 +78,11 @@ public:
     
     void ButtonUpdateCallback(Ref* pSender, Widget::TouchEventType type);
     
-    
+    //登入
     void UserLogIn();
     void LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     
+    //注册
     void UserSignUp();
     void SignUpCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     

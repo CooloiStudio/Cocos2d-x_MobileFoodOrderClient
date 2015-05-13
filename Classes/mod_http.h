@@ -28,6 +28,7 @@ public:
     
 public:
     
+    // 下载图片
     int DownloadPicture(int img_id);
     void OnDownloadComplete(HttpClient *sender, HttpResponse *response);
     static void SetGetSocksDone(){get_socks_ = 0;}
@@ -38,10 +39,11 @@ public:
     static void SetGoInting(){go_int_ = -1;}
     static int GetGoInt(){return go_int_;}
     
-    
+    //登陆函数
     void UserLogIn();
     void LogInCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     
+    //登出函数
     void UserLogOut();
     void UserTest();
     
