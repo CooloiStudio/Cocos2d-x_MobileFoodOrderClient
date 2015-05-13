@@ -24,7 +24,7 @@ public:
     
 //    static std::string GetConfigIp(){return config_ip_;}
 //    static std::string GetConfigPort(){return config_port_;}
-    static int GetBoomNum(){return boom_;}
+    static int GetBoomNum(){return boom_;}  //是否无限请求数据
     
 //    static void SetConfigIp(std::string ip){config_ip_ = ip;}
 //    static void SetConfigPort(std::string port){config_port_ = port;}

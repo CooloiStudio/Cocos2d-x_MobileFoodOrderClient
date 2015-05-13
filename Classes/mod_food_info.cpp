@@ -78,12 +78,6 @@ void ModFoodInfo::InitTop()
     log("size %f",button_back->getContentSize().width );
     button_back->setPosition(Vec2(layer_top_->getPositionX() + button_back->getContentSize().width / 2 * scale, layer_top_->getPositionY() + layer_top_->getContentSize().height / 2));
     button_back->addTouchEventListener(CC_CALLBACK_2(ModFoodInfo::ButtonBackCallback, this));
-//    
-//    auto button_info = Button::create("info.png");
-//    button_info->setScale(scale);
-//    button_info->setPosition(Vec2(layer_top_->getPositionX() + size.width - button_back->getContentSize().width / 2 * scale, layer_top_->getPositionY() + layer_top_->getContentSize().height / 2));
-//    button_info->addTouchEventListener(CC_CALLBACK_2(ModFoodInfo::ButtonInfoCallback, this));
-    
     
     addChild(button_back,51);
 //    addChild(button_info,51);

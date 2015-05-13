@@ -36,14 +36,14 @@ private:
 
 //    Layer* layer_;
     ScrollView* layer_list_;
-    std::vector<ModFoodShow*> food_;
+    std::vector<ModFoodShow*> food_;    //暂存食物列表
     Vec2 touch_began_;
     
-    std::string food_list_;
+    std::string food_list_; //存储食物的名字
     
     int reget_;
     
-    EventListener* listener_;
+    EventListener* listener_;   //触控监听
 #pragma mark - Initialization
 public:
     ModCustom();
@@ -60,6 +60,7 @@ public:
     void ButtonBackCallback(Ref* pSender, Widget::TouchEventType type);
     void ButtonInfoCallback(Ref* pSender, Widget::TouchEventType type);
     
+    //触控回调
     virtual bool onTouchBegan(Touch* touch, Event* event);
     virtual void onTouchEnded(Touch* touch, Event* event);
     virtual void onTouchMoved(Touch* touch, Event* event);
@@ -71,7 +72,6 @@ public:
 #pragma mark - GetFood
     
     void GetFood();
-    
     
     void ListCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     

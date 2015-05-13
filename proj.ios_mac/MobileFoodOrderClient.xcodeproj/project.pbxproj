@@ -14,8 +14,6 @@
 		3F0F4FE7BFD23C718A7344DE /* res in Resources */ = {isa = PBXBuildFile; fileRef = 0F3A4B559B3019F2C7B0E080 /* res */; };
 		46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
 		46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8419C43A87006E1F66 /* AppDelegate.cpp */; };
-		46880B8A19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */; };
-		46880B8B19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */; };
 		503AE0F817EB97AB00D1A890 /* Icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = 503AE0F617EB97AB00D1A890 /* Icon.icns */; };
 		503AE10017EB989F00D1A890 /* AppController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 503AE0FB17EB989F00D1A890 /* AppController.mm */; };
 		503AE10117EB989F00D1A890 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 503AE0FC17EB989F00D1A890 /* main.m */; };
@@ -72,8 +70,6 @@
 		9043F2F51AC68B9F009C245B /* mod_food_show.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9043F2F21AC68B9F009C245B /* mod_food_show.cpp */; };
 		9043F2F81AC692FA009C245B /* mod_check.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9043F2F61AC692FA009C245B /* mod_check.cpp */; };
 		9043F2F91AC692FA009C245B /* mod_check.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9043F2F61AC692FA009C245B /* mod_check.cpp */; };
-		90513D371AEE242F00C8DEA8 /* mod_food_order.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90513D351AEE242F00C8DEA8 /* mod_food_order.cpp */; };
-		90513D381AEE242F00C8DEA8 /* mod_food_order.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90513D351AEE242F00C8DEA8 /* mod_food_order.cpp */; };
 		906BF9341AED031A00032329 /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 906BF9331AED031A00032329 /* edit.png */; };
 		906BF9351AED031A00032329 /* edit.png in Resources */ = {isa = PBXBuildFile; fileRef = 906BF9331AED031A00032329 /* edit.png */; };
 		906BF93D1AED10DF00032329 /* foodshop.png in Resources */ = {isa = PBXBuildFile; fileRef = 906BF93C1AED10DF00032329 /* foodshop.png */; };
@@ -92,8 +88,6 @@
 		90B1C6701AB566B1000DB4E7 /* mod_main_menu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90B1C66D1AB566B1000DB4E7 /* mod_main_menu.cpp */; };
 		90B1C67E1AB584F4000DB4E7 /* mod_custom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90B1C67C1AB584F4000DB4E7 /* mod_custom.cpp */; };
 		90B1C67F1AB584F4000DB4E7 /* mod_custom.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90B1C67C1AB584F4000DB4E7 /* mod_custom.cpp */; };
-		90B1C6821AB586E7000DB4E7 /* mod_shopping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90B1C6801AB586E7000DB4E7 /* mod_shopping.cpp */; };
-		90B1C6831AB586E7000DB4E7 /* mod_shopping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90B1C6801AB586E7000DB4E7 /* mod_shopping.cpp */; };
 		90B1C6861AB58C1E000DB4E7 /* mod_custom_info.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90B1C6841AB58C1E000DB4E7 /* mod_custom_info.cpp */; };
 		90B1C6871AB58C1E000DB4E7 /* mod_custom_info.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 90B1C6841AB58C1E000DB4E7 /* mod_custom_info.cpp */; };
 		90B1C68B1AB5AE9E000DB4E7 /* bt2.png in Resources */ = {isa = PBXBuildFile; fileRef = 90B1C6881AB5AE9E000DB4E7 /* bt2.png */; };
@@ -136,8 +130,6 @@
 		36C64C27B51AFFE8FF5464D4 /* libcocos2d iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libcocos2d iOS.a"; path = "/Applications/Cocos/frameworks/cocos2d-x-3.4/prebuilt/ios/libcocos2d iOS.a"; sourceTree = "<absolute>"; };
 		46880B8419C43A87006E1F66 /* AppDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AppDelegate.cpp; sourceTree = "<group>"; };
 		46880B8519C43A87006E1F66 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HelloWorldScene.cpp; sourceTree = "<group>"; };
-		46880B8719C43A87006E1F66 /* HelloWorldScene.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelloWorldScene.h; sourceTree = "<group>"; };
 		503AE0F617EB97AB00D1A890 /* Icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Icon.icns; sourceTree = "<group>"; };
 		503AE0F717EB97AB00D1A890 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		503AE0FA17EB989F00D1A890 /* AppController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppController.h; path = ios/AppController.h; sourceTree = SOURCE_ROOT; };
@@ -188,8 +180,6 @@
 		9043F2F31AC68B9F009C245B /* mod_food_show.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_food_show.h; sourceTree = "<group>"; };
 		9043F2F61AC692FA009C245B /* mod_check.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mod_check.cpp; sourceTree = "<group>"; };
 		9043F2F71AC692FA009C245B /* mod_check.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_check.h; sourceTree = "<group>"; };
-		90513D351AEE242F00C8DEA8 /* mod_food_order.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mod_food_order.cpp; sourceTree = "<group>"; };
-		90513D361AEE242F00C8DEA8 /* mod_food_order.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_food_order.h; sourceTree = "<group>"; };
 		906BF9331AED031A00032329 /* edit.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = edit.png; sourceTree = "<group>"; };
 		906BF93C1AED10DF00032329 /* foodshop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = foodshop.png; sourceTree = "<group>"; };
 		9074F90A1ABD58E1009E8E7F /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
@@ -203,8 +193,6 @@
 		90B1C66E1AB566B1000DB4E7 /* mod_main_menu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_main_menu.h; sourceTree = "<group>"; };
 		90B1C67C1AB584F4000DB4E7 /* mod_custom.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mod_custom.cpp; sourceTree = "<group>"; };
 		90B1C67D1AB584F4000DB4E7 /* mod_custom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_custom.h; sourceTree = "<group>"; };
-		90B1C6801AB586E7000DB4E7 /* mod_shopping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mod_shopping.cpp; sourceTree = "<group>"; };
-		90B1C6811AB586E7000DB4E7 /* mod_shopping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_shopping.h; sourceTree = "<group>"; };
 		90B1C6841AB58C1E000DB4E7 /* mod_custom_info.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mod_custom_info.cpp; sourceTree = "<group>"; };
 		90B1C6851AB58C1E000DB4E7 /* mod_custom_info.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mod_custom_info.h; sourceTree = "<group>"; };
 		90B1C6881AB5AE9E000DB4E7 /* bt2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bt2.png; sourceTree = "<group>"; };
@@ -375,8 +363,6 @@
 				46880B8519C43A87006E1F66 /* AppDelegate.h */,
 				901641C11AEA3AC1000FE9A9 /* custom_string.cpp */,
 				901641C21AEA3AC1000FE9A9 /* custom_string.h */,
-				46880B8619C43A87006E1F66 /* HelloWorldScene.cpp */,
-				46880B8719C43A87006E1F66 /* HelloWorldScene.h */,
 				9074F9151ABD72CB009E8E7F /* Info.cpp */,
 				9074F9161ABD72CB009E8E7F /* Info.h */,
 				9043F2F61AC692FA009C245B /* mod_check.cpp */,
@@ -389,16 +375,12 @@
 				90B1C67D1AB584F4000DB4E7 /* mod_custom.h */,
 				90930B8E1AC806CF003DC8A0 /* mod_food_info.cpp */,
 				90930B8F1AC806CF003DC8A0 /* mod_food_info.h */,
-				90513D351AEE242F00C8DEA8 /* mod_food_order.cpp */,
-				90513D361AEE242F00C8DEA8 /* mod_food_order.h */,
 				9043F2F21AC68B9F009C245B /* mod_food_show.cpp */,
 				9043F2F31AC68B9F009C245B /* mod_food_show.h */,
 				9043F2EB1AC66F00009C245B /* mod_http.cpp */,
 				9043F2EC1AC66F00009C245B /* mod_http.h */,
 				90B1C66D1AB566B1000DB4E7 /* mod_main_menu.cpp */,
 				90B1C66E1AB566B1000DB4E7 /* mod_main_menu.h */,
-				90B1C6801AB586E7000DB4E7 /* mod_shopping.cpp */,
-				90B1C6811AB586E7000DB4E7 /* mod_shopping.h */,
 			);
 			name = Classes;
 			path = ../Classes;
@@ -614,11 +596,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				90B1C6821AB586E7000DB4E7 /* mod_shopping.cpp in Sources */,
 				46880B8819C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				90B1C67E1AB584F4000DB4E7 /* mod_custom.cpp in Sources */,
 				901641C31AEA3AC1000FE9A9 /* custom_string.cpp in Sources */,
-				46880B8A19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */,
 				503AE10017EB989F00D1A890 /* AppController.mm in Sources */,
 				90B1C6861AB58C1E000DB4E7 /* mod_custom_info.cpp in Sources */,
 				503AE10217EB989F00D1A890 /* RootViewController.mm in Sources */,
@@ -627,7 +607,6 @@
 				9043F2F81AC692FA009C245B /* mod_check.cpp in Sources */,
 				90B1C66F1AB566B1000DB4E7 /* mod_main_menu.cpp in Sources */,
 				90FD57E71AE7B75C004A125E /* mod_config_json.cpp in Sources */,
-				90513D371AEE242F00C8DEA8 /* mod_food_order.cpp in Sources */,
 				9043F2F41AC68B9F009C245B /* mod_food_show.cpp in Sources */,
 				503AE10117EB989F00D1A890 /* main.m in Sources */,
 				9074F9171ABD72CB009E8E7F /* Info.cpp in Sources */,
@@ -640,18 +619,15 @@
 			files = (
 				90930B911AC806CF003DC8A0 /* mod_food_info.cpp in Sources */,
 				901641C41AEA3AC1000FE9A9 /* custom_string.cpp in Sources */,
-				90B1C6831AB586E7000DB4E7 /* mod_shopping.cpp in Sources */,
 				90B1C6871AB58C1E000DB4E7 /* mod_custom_info.cpp in Sources */,
 				46880B8919C43A87006E1F66 /* AppDelegate.cpp in Sources */,
 				503AE10517EB98FF00D1A890 /* main.cpp in Sources */,
 				90B1C6701AB566B1000DB4E7 /* mod_main_menu.cpp in Sources */,
 				90FD57E81AE7B75C004A125E /* mod_config_json.cpp in Sources */,
-				90513D381AEE242F00C8DEA8 /* mod_food_order.cpp in Sources */,
 				9074F9181ABD72CB009E8E7F /* Info.cpp in Sources */,
 				9043F2EE1AC66F00009C245B /* mod_http.cpp in Sources */,
 				9043F2F51AC68B9F009C245B /* mod_food_show.cpp in Sources */,
 				9043F2F91AC692FA009C245B /* mod_check.cpp in Sources */,
-				46880B8B19C43A87006E1F66 /* HelloWorldScene.cpp in Sources */,
 				90B1C67F1AB584F4000DB4E7 /* mod_custom.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -76,7 +76,7 @@ public:
     
 #pragma mark - Function
     
-    int InitFoodShow();    
+    int InitFoodShow();    //初始化食物信息
     
     void ButtonShopCallback(Ref* pSender, Widget::TouchEventType type);
     void ButtonInfoCallback(Ref* pSender, Widget::TouchEventType type);
@@ -86,10 +86,10 @@ public:
     void GetList();
     
     
-    int DownloadPicture();
+    int DownloadPicture();  //  从服务器获取图片
     void OnDownloadComplete(HttpClient *sender, HttpResponse *response);
     
-    void BuySomething();
+    void BuySomething();    //  购买回调函数
     void BuyCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
 };
 

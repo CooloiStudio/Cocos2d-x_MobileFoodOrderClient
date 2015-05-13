@@ -12,7 +12,7 @@
 #include "iostream"
 #include "cocos2d.h"
 #include "cocos-ext.h"
-#include "mod_shopping.h"
+//#include "mod_shopping.h"
 #include "mod_config_json.h"
 #include "Info.h"
 
@@ -32,10 +32,10 @@ public extension::TableViewDelegate,
 public EditBoxDelegate
 {
 private:
-    LayerColor* layer_top_;
-    LayerColor* layer_bottom_;
+    LayerColor* layer_top_; //顶部菜单栏
+    LayerColor* layer_bottom_;  //底部菜单栏
     
-    extension::TableView* menu_;
+    extension::TableView* menu_;    //菜单
     
     std::string get_into_;
     
@@ -55,17 +55,17 @@ public:
     ~ModCustomInfo(){}
     bool init();
     static Scene* createScene(int scene_info);
-//    CREATE_FUNC(ModCustomInfo);
+    //    CREATE_FUNC(ModCustomInfo);
     
 public:
     
-    void InitTop();
+    void InitTop(); //初始化顶部菜单
     void ButtonBackCallback(Ref* pSender, Widget::TouchEventType type);
     void ButtonShopCallback(Ref* pSender, Widget::TouchEventType type);
     
-    void InitMenu();
+    void InitMenu();     //初始化菜单
     
-    void InitBottom();
+    void InitBottom();  //初始化底部菜单
     virtual void editBoxEditingDigBegin(EditBox* editbox);
     virtual void editBoxEditingDidEnd(EditBox* editbox);
     virtual void editBoxTextChanged (EditBox *editBox, const std::string &text);
@@ -74,18 +74,18 @@ public:
     void SubmitShop();
     void SubmitShopCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     void SubmitChange(float dt);
-
-    void UserLogOut();
+    
+    void UserLogOut();  //登出回调函数
     void LogOutCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     
-    void GetInfo();
+    void GetInfo();     //获取信息回调函数
     void GetInfoCallback(cocos2d::network::HttpClient *sender, cocos2d::network::HttpResponse *response);
     
     void SetSceneInfo(int scene_info);
     
 #pragma mark - TableView
     
-    void CreateTableView();
+    void CreateTableView(); //初始化菜单
     virtual Size cellSizeForTable(extension::TableView* table);
     virtual extension::TableViewCell* tableCellAtIndex(extension::TableView* table,
                                                        ssize_t idx);
